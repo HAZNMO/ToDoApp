@@ -1,46 +1,28 @@
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, HTTPException, Depends
 from pydantic import BaseModel
-
-from API_construct.new_main import sign, decode
+from Users.user_repository import register_user, authenticate_user, decode_token
 
 app = FastAPI()
-userlist = []
 
 class SignUpSchema(BaseModel):
-    name: str = "Cris"
-    email: str = "Cris@gmail.com"
-    password: str = "Cris1234"
+    name: str
+    email: str
+    password: str
 
 @app.post("/signup")
-def sign_up(request: SignUpSchema):
-    for user in userlist:
-        if user.email == request.email:
-            raise HTTPException(status_code=400, detail="Email already registered")
-    userlist.append(request)
-
-    token = sign(request.email)
-
-    for user in userlist:
-        print(user.name, user.email, user.password)
-
+async def sign_up(request: SignUpSchema):
+    token = await register_user(request.name, request.email, request.password)
     return {"token": token}
 
 class SignInSchema(BaseModel):
-    email: str = "Cris@gmail.com"
-    password: str = "Cris1234"
+    email: str
+    password: str
 
 @app.post("/signin")
-def sign_in(request: SignInSchema):
-    for user in userlist:
-        if user.email == request.email:
-            if user.password == request.password:
-                token = sign(user.email)
-                return {"token": token}
-            else:
-                raise HTTPException(status_code=400, detail="Incorrect password")
-    raise HTTPException(status_code=400, detail="Incorrect email")
+async def sign_in(request: SignInSchema):
+    token = await authenticate_user(request.email, request.password)
+    return {"token": token}
 
 @app.post("/authtest")
-def auth_test(decoded: str = Depends(decode)):
-    return decoded
-
+def auth_test(token: str = Depends(decode_token)):
+    return {"email": token["email"]}
