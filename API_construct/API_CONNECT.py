@@ -1,28 +1,43 @@
 from fastapi import FastAPI, HTTPException, Depends
-from pydantic import BaseModel
-from Users.user_repository import register_user, authenticate_user, decode_token
+from Users.user_repository import (
+    decode_token, get_user_todos, create_todo_item,
+    update_todo_item, delete_todo_item, register_user, authenticate_user
+)
+from TODOS.todo_model import TodoItem
+from Users.user_model import UserCreate, UserLogin, UserResponse  # Add this import
 
 app = FastAPI()
 
-class SignUpSchema(BaseModel):
-    name: str
-    email: str
-    password: str
+@app.post("/register", response_model=UserResponse)
+async def register(user: UserCreate):
+    token = await register_user(user.name, user.email, user.password)
+    return UserResponse(email=user.email, token=token)
 
-@app.post("/signup")
-async def sign_up(request: SignUpSchema):
-    token = await register_user(request.name, request.email, request.password)
-    return {"token": token}
+@app.post("/login", response_model=UserResponse)
+async def login(user: UserLogin):
+    token = await authenticate_user(user.email, user.password)
+    return UserResponse(email=user.email, token=token)
 
-class SignInSchema(BaseModel):
-    email: str
-    password: str
+@app.get("/todos")
+async def get_todos(user_id: dict = Depends(decode_token)):
+    todos = await get_user_todos(user_id['email'])
+    return todos
 
-@app.post("/signin")
-async def sign_in(request: SignInSchema):
-    token = await authenticate_user(request.email, request.password)
-    return {"token": token}
+@app.post("/todos")
+async def add_todo(todo: TodoItem, user_id: dict = Depends(decode_token)):
+    todo_item = await create_todo_item(user_id['email'], todo)
+    return todo_item
 
-@app.post("/authtest")
-def auth_test(token: str = Depends(decode_token)):
-    return {"email": token["email"]}
+@app.put("/todos/{todo_id}")
+async def update_todo(todo_id: str, todo: TodoItem, user_id: dict = Depends(decode_token)):
+    updated_todo = await update_todo_item(todo_id, user_id['email'], todo)
+    if not updated_todo:
+        raise HTTPException(status_code=404, detail="Todo not found or you do not have access to this todo")
+    return updated_todo
+
+@app.delete("/todos/{todo_id}")
+async def remove_todo(todo_id: str, user_id: dict = Depends(decode_token)):
+    deleted_count = await delete_todo_item(todo_id, user_id['email'])
+    if deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Todo not found or you do not have access to this todo")
+    return {"detail": "Todo deleted successfully"}

@@ -4,17 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="64eb673f-cb88-41b6-b3c8-8eba8efa7374" name="Changes" comment="Add todo repository, schema, and model files&#10;&#10;Implemented core functionality for managing To-Do items including CRUD operations in `todo_repository.py`, defined data validation schemas in `todo_schema.py`, and established a data model in `todo_model.py`. This setup provides a complete backend structure for handling To-Do items with MongoDB.">
-      <change afterPath="$PROJECT_DIR$/API_construct/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Users/user_collection.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Users/user_repository.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mongodb_connect/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mongodb_connect/mongo_connection.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="64eb673f-cb88-41b6-b3c8-8eba8efa7374" name="Changes" comment="Remove FastAPI user management; add MongoDB connection.&#10;&#10;Removed the complete `main.py` and `new_main.py` that handled user management with FastAPI. Introduced a new `mongo_connection.py` to establish a MongoDB connection using motor and dotenv.">
+      <change afterPath="$PROJECT_DIR$/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/API_construct/API_CONNECT.py" beforeDir="false" afterPath="$PROJECT_DIR$/API_construct/API_CONNECT.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API_construct/main.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/API_construct/new_main.py" beforeDir="false" afterPath="$PROJECT_DIR$/authentication/new_main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TODOS/todo_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/TODOS/todo_model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Users/user_repository.py" beforeDir="false" afterPath="$PROJECT_DIR$/Users/user_repository.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,6 +46,7 @@
     "Python.main.executor": "Run",
     "Python.mongo_connection.executor": "Run",
     "Python.new_main.executor": "Run",
+    "Python.user_repository.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "main",
     "node.js.detected.package.eslint": "true",
@@ -58,7 +54,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "inlay.hints",
+    "settings.editor.selected.configurable": "preferences.keymap",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -85,7 +81,7 @@
       <updated>1728281456244</updated>
       <workItem from="1728281458448" duration="8984000" />
       <workItem from="1728298053199" duration="19782000" />
-      <workItem from="1728393214706" duration="12715000" />
+      <workItem from="1728393214706" duration="15584000" />
     </task>
     <task id="LOCAL-00001" summary="intitial project">
       <option name="closed" value="true" />
@@ -143,11 +139,46 @@
       <option name="project" value="LOCAL" />
       <updated>1728467266456</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Add user repository and collection modules&#10;&#10;Introduce `user_repository.py` and `user_collection.py` for handling user authentication and data operations. This includes password hashing, JWT token management, and MongoDB interactions for registration and authentication.">
+      <option name="closed" value="true" />
+      <created>1728468401584</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1728468401584</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Refactor user authentication endpoints&#10;&#10;Replaced in-memory userlist with database-backed user management. Updated signup and signin to use new async user repository methods, ensuring better separation of concerns and scalability.">
+      <option name="closed" value="true" />
+      <created>1728468418818</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1728468418818</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Add IntelliJ configuration updates&#10;&#10;Introduced several new configurations for project management, including AutoImportSettings and RecentsManager components. Also added Git settings, VCS Manager configuration, and coverage data management. Updated .idea/misc.xml to include a new &quot;Black&quot; component along with project SDK details.">
+      <option name="closed" value="true" />
+      <created>1728468443483</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1728468443483</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Remove FastAPI user management; add MongoDB connection.&#10;&#10;Removed the complete `main.py` and `new_main.py` that handled user management with FastAPI. Introduced a new `mongo_connection.py` to establish a MongoDB connection using motor and dotenv.">
+      <option name="closed" value="true" />
+      <created>1728468469504</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1728468469504</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName=".env" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="intitial project" />
@@ -156,7 +187,11 @@
     <MESSAGE value="Add JWT token generation and validation&#10;&#10;Introduces new functions `sigin` and `decode` for generating and validating JWT tokens using FastAPI and PyJWT. This update enhances authentication mechanisms by securely encoding payloads with a secret key." />
     <MESSAGE value="Add user authentication endpoints to API&#10;&#10;Implemented signup, signin, and auth test endpoints using FastAPI. Incorporated email registration and token-based authentication." />
     <MESSAGE value="Add todo repository, schema, and model files&#10;&#10;Implemented core functionality for managing To-Do items including CRUD operations in `todo_repository.py`, defined data validation schemas in `todo_schema.py`, and established a data model in `todo_model.py`. This setup provides a complete backend structure for handling To-Do items with MongoDB." />
-    <option name="LAST_COMMIT_MESSAGE" value="Add todo repository, schema, and model files&#10;&#10;Implemented core functionality for managing To-Do items including CRUD operations in `todo_repository.py`, defined data validation schemas in `todo_schema.py`, and established a data model in `todo_model.py`. This setup provides a complete backend structure for handling To-Do items with MongoDB." />
+    <MESSAGE value="Add user repository and collection modules&#10;&#10;Introduce `user_repository.py` and `user_collection.py` for handling user authentication and data operations. This includes password hashing, JWT token management, and MongoDB interactions for registration and authentication." />
+    <MESSAGE value="Refactor user authentication endpoints&#10;&#10;Replaced in-memory userlist with database-backed user management. Updated signup and signin to use new async user repository methods, ensuring better separation of concerns and scalability." />
+    <MESSAGE value="Add IntelliJ configuration updates&#10;&#10;Introduced several new configurations for project management, including AutoImportSettings and RecentsManager components. Also added Git settings, VCS Manager configuration, and coverage data management. Updated .idea/misc.xml to include a new &quot;Black&quot; component along with project SDK details." />
+    <MESSAGE value="Remove FastAPI user management; add MongoDB connection.&#10;&#10;Removed the complete `main.py` and `new_main.py` that handled user management with FastAPI. Introduced a new `mongo_connection.py` to establish a MongoDB connection using motor and dotenv." />
+    <option name="LAST_COMMIT_MESSAGE" value="Remove FastAPI user management; add MongoDB connection.&#10;&#10;Removed the complete `main.py` and `new_main.py` that handled user management with FastAPI. Introduced a new `mongo_connection.py` to establish a MongoDB connection using motor and dotenv." />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/ToDoApp$main.coverage" NAME="main Coverage Results" MODIFIED="1728398128352" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/API_construct" />
@@ -165,6 +200,7 @@
     <SUITE FILE_PATH="coverage/ToDoApp$mongo_connection.coverage" NAME="mongo_connection Coverage Results" MODIFIED="1728398660328" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/mongodb_connect" />
     <SUITE FILE_PATH="coverage/ToDoApp$__init__.coverage" NAME="__init__ Coverage Results" MODIFIED="1728290950424" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/API_construct" />
     <SUITE FILE_PATH="coverage/ToDoApp$APIs.coverage" NAME="APIs Coverage Results" MODIFIED="1728289817685" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/API_construct" />
-    <SUITE FILE_PATH="coverage/ToDoApp$API_CONNECT.coverage" NAME="API_CONNECT Coverage Results" MODIFIED="1728462910538" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/API_construct" />
+    <SUITE FILE_PATH="coverage/ToDoApp$user_repository.coverage" NAME="user_repository Coverage Results" MODIFIED="1728468369235" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Users" />
+    <SUITE FILE_PATH="coverage/ToDoApp$API_CONNECT.coverage" NAME="API_CONNECT Coverage Results" MODIFIED="1728469700967" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/API_construct" />
   </component>
 </project>

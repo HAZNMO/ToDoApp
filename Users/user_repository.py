@@ -1,4 +1,4 @@
-from motor.motor_asyncio import AsyncIOMotorClient
+from mongodb_connect.mongo_connection import user_collection
 from passlib.context import CryptContext
 from dotenv import load_dotenv
 from datetime import datetime
@@ -6,30 +6,17 @@ import jwt
 import os
 from fastapi import HTTPException
 import secrets
+from TODOS.todo_model import TodoItem
+from bson import ObjectId
 
-# Загрузка переменных окружения
+
 load_dotenv()
 
-# Настройка JWT и bcrypt
 JWT_SECRET = os.getenv("JWT_SECRET", secrets.token_hex(16))
 JWT_ALGORITHM = "HS256"
 
 # Настройка bcrypt для хеширования паролей
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-# Подключение к MongoDB
-class MongoDBConnection:
-    def __init__(self, database_name="tododb"):
-        mongo_url = os.getenv("MONGO_URL", "mongodb://localhost:27017")
-        self.client = AsyncIOMotorClient(mongo_url)
-        self.database = self.client[database_name]
-
-    def get_collection(self, collection_name):
-        return self.database[collection_name]
-
-mongodb_connection = MongoDBConnection()
-user_collection = mongodb_connection.get_collection("users")
-
 # Хеширование пароля
 def hash_password(password: str) -> str:
     return pwd_context.hash(password)
@@ -42,7 +29,7 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
 def create_token(email: str) -> str:
     payload = {
         "email": email,
-        "timestamp": datetime.utcnow().isoformat()
+        "timestamp": datetime.now().isoformat()
     }
     token = jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
     return token
@@ -57,7 +44,6 @@ def decode_token(token: str) -> dict:
     except jwt.InvalidTokenError:
         raise HTTPException(status_code=401, detail="Invalid token")
 
-# Функция для регистрации нового пользователя
 async def register_user(name: str, email: str, password: str):
     user_exists = await user_collection.find_one({"email": email})
     if user_exists:
@@ -68,14 +54,41 @@ async def register_user(name: str, email: str, password: str):
         "name": name,
         "email": email,
         "password": hashed_password,
-        "created_at": datetime.utcnow()
+        "created_at": datetime.now()
     }
     result = await user_collection.insert_one(new_user)
     return create_token(email)
 
-# Функция для авторизации пользователя
 async def authenticate_user(email: str, password: str):
     user = await user_collection.find_one({"email": email})
     if user and verify_password(password, user["password"]):
         return create_token(email)
     raise HTTPException(status_code=400, detail="Incorrect email or password")
+
+async def get_user_todos(user_id: str, skip: int = 0, limit: int = 100):
+    todos_cursor = await user_collection.find({"user_id": user_id}).skip(skip).limit(limit).to_list(length=limit)
+    return todos_cursor
+
+# Функция для создания задачи
+async def create_todo_item(user_id: str, todo: TodoItem):
+    todo_dict = todo.model_dump()
+    todo_dict["user_id"] = user_id
+    todo_dict["created_at"] = datetime.now()
+    result = await user_collection.insert_one(todo_dict)
+    return await get_todo_item(str(result.inserted_id))
+
+# Функция для получения одной задачи по ID
+async def get_todo_item(todo_id: str):
+    todo = await user_collection.find_one({"_id": ObjectId(todo_id)})
+    return todo
+
+# Функция для обновления задачи
+async def update_todo_item(todo_id: str, user_id: str, todo: TodoItem):
+    update_data = {k: v for k, v in todo.model_dump().items() if v is not None}
+    await user_collection.update_one({"_id": ObjectId(todo_id), "user_id": user_id}, {"$set": update_data})
+    return await get_todo_item(todo_id)
+
+# Функция для удаления задачи
+async def delete_todo_item(todo_id: str, user_id: str):
+    result = await user_collection.delete_one({"_id": ObjectId(todo_id), "user_id": user_id})
+    return result.deleted_count
