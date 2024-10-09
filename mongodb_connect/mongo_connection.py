@@ -6,8 +6,9 @@ load_dotenv()
 
 class MongoDBConnection:
     def __init__(self, database_name="tododb"):
-        mongo_url = os.getenv("MONGO_URL", "mongodb://localhost:27017")
-        self.client = AsyncIOMotorClient(mongo_url)
+        mongo_url = os.getenv("MONGO_URL")
+        print(mongo_url)
+        self.client = AsyncIOMotorClient(mongo_url,tlsAllowInvalidCertificates=True)
         self.database = self.client[database_name]
 
     def get_collection(self, collection_name):
