@@ -1,15 +1,13 @@
-import time
 import jwt
 from fastapi import HTTPException
-from pydantic import BaseModel
 import secrets
 
-JWT_SECRET = secrets.token_hex(32)
+JWT_SECRET = secrets.token_hex(16)
 JWT_ALGORITHM = "HS256"
 
 print(JWT_SECRET)
 
-def sigin(email):
+def sign(email):
     payload = {
         "email": email,
     }
