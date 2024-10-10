@@ -4,10 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="64eb673f-cb88-41b6-b3c8-8eba8efa7374" name="Changes" comment="Update MongoDB connection and task management&#10;&#10;Simplified the MongoDB connection initialization by removing the default URL and enabling invalid certificate allowance. Refactored task and user management functionalities to use new data models and added token-based authentication.">
+    <list default="true" id="64eb673f-cb88-41b6-b3c8-8eba8efa7374" name="Changes" comment="Refactor MongoDB setup and task management&#10;&#10;Simplified MongoDB connection initialization and refactored task/user management to use new data models. Updated authentication to token-based and reorganized file structure for better readability.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/API_construct/API_connect.py" beforeDir="false" afterPath="$PROJECT_DIR$/API_construct/API_connect.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API_construct/athentification.py" beforeDir="false" afterPath="$PROJECT_DIR$/Users/user_authentification.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TODOS/todo_repository.py" beforeDir="false" afterPath="$PROJECT_DIR$/TODOS/todo_repository.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Users/user_repository.py" beforeDir="false" afterPath="$PROJECT_DIR$/Users/user_repository.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -103,7 +103,7 @@
       <workItem from="1728281458448" duration="8984000" />
       <workItem from="1728298053199" duration="19782000" />
       <workItem from="1728393214706" duration="20935000" />
-      <workItem from="1728485277534" duration="14059000" />
+      <workItem from="1728485277534" duration="21405000" />
     </task>
     <task id="LOCAL-00001" summary="intitial project">
       <option name="closed" value="true" />
@@ -217,7 +217,23 @@
       <option name="project" value="LOCAL" />
       <updated>1728498262842</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Rename authentication file and add JWT-based methods&#10;&#10;Renamed the `athentification.py` to `user_authentification.py` for better clarity. Added JWT token generation, decoding, and user registration/authentication functions leveraging FastAPI and MongoDB.">
+      <option name="closed" value="true" />
+      <created>1728548821543</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1728548821543</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Refactor MongoDB setup and task management&#10;&#10;Simplified MongoDB connection initialization and refactored task/user management to use new data models. Updated authentication to token-based and reorganized file structure for better readability.">
+      <option name="closed" value="true" />
+      <created>1728548836980</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1728548836980</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -240,11 +256,13 @@
     <MESSAGE value="Add User model with Pydantic validation&#10;&#10;Creates UserCreate, UserLogin, and UserResponse classes in Users/user_model.py. These classes include Pydantic validation for user attributes such as name, email, password, and token. This sets up a structured way to handle user data through type validation." />
     <MESSAGE value="Integrate MongoDB for user management and To-Do items&#10;&#10;Replaced FastAPI-based user management with MongoDB integration. Added user authentication functions and To-Do item operations using MongoDB collections." />
     <MESSAGE value="Update MongoDB connection and task management&#10;&#10;Simplified the MongoDB connection initialization by removing the default URL and enabling invalid certificate allowance. Refactored task and user management functionalities to use new data models and added token-based authentication." />
-    <option name="LAST_COMMIT_MESSAGE" value="Update MongoDB connection and task management&#10;&#10;Simplified the MongoDB connection initialization by removing the default URL and enabling invalid certificate allowance. Refactored task and user management functionalities to use new data models and added token-based authentication." />
+    <MESSAGE value="Rename authentication file and add JWT-based methods&#10;&#10;Renamed the `athentification.py` to `user_authentification.py` for better clarity. Added JWT token generation, decoding, and user registration/authentication functions leveraging FastAPI and MongoDB." />
+    <MESSAGE value="Refactor MongoDB setup and task management&#10;&#10;Simplified MongoDB connection initialization and refactored task/user management to use new data models. Updated authentication to token-based and reorganized file structure for better readability." />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactor MongoDB setup and task management&#10;&#10;Simplified MongoDB connection initialization and refactored task/user management to use new data models. Updated authentication to token-based and reorganized file structure for better readability." />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/ToDoApp$todo_model.coverage" NAME="todo_model Coverage Results" MODIFIED="1728486081638" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/TODOS" />
-    <SUITE FILE_PATH="coverage/ToDoApp$Unnamed.coverage" NAME="Unnamed Coverage Results" MODIFIED="1728548195964" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/ToDoApp$Unnamed.coverage" NAME="Unnamed Coverage Results" MODIFIED="1728553878466" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/ToDoApp$mongo_connection.coverage" NAME="mongo_connection Coverage Results" MODIFIED="1728489585131" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/mongodb_connect" />
     <SUITE FILE_PATH="coverage/ToDoApp$main.coverage" NAME="main Coverage Results" MODIFIED="1728398128352" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/API_construct" />
     <SUITE FILE_PATH="coverage/ToDoApp$new_main.coverage" NAME="new_main Coverage Results" MODIFIED="1728462999072" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/API_construct" />

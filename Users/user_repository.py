@@ -1,16 +1,11 @@
 from mongodb_connect.mongo_connection import user_collection
-from passlib.context import CryptContext
-from dotenv import load_dotenv
-import jwt
-import os
-from fastapi import HTTPException,Depends
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-import secrets
 from TODOS.todo_model import TodoModel
 from bson import ObjectId
 
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timezone
 
+def utcnow():
+    return datetime.now(tz=timezone.utc)
 
 # def utcnow():
 #     return datetime.now(tz=timezone.utc)
@@ -33,14 +28,6 @@ from datetime import datetime, timezone, timedelta
 # def verify_password(plain_password: str, hashed_password: str) -> bool:
 #     return pwd_context.verify(plain_password, hashed_password)
 #
-# # Создание JWT токена
-# def create_token(email: str) -> str:
-#     payload = {
-#         "email": email,
-#         "timestamp": datetime.now().isoformat()
-#     }
-#     token = jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
-#     return token
 #
 # def create_token(email: str) -> str:
 #     expiration = utcnow() + timedelta(minutes=TOKEN_EXPIRE_MINUTES)
@@ -90,7 +77,7 @@ async def get_user_todos(user_id: str, skip: int = 0, limit: int = 100):
 async def create_todo_item(user_id: str, todo: TodoModel):
     todo_dict = todo.model_dump()
     todo_dict["user_id"] = user_id
-    todo_dict["created_at"] = datetime.now()
+    todo_dict["created_at"] = utcnow().isoformat()
     result = await user_collection.insert_one(todo_dict)
     return await get_todo_item(str(result.inserted_id))
 
