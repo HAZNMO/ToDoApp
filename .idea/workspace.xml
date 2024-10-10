@@ -5,10 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="64eb673f-cb88-41b6-b3c8-8eba8efa7374" name="Changes" comment="Refactor MongoDB setup and task management&#10;&#10;Simplified MongoDB connection initialization and refactored task/user management to use new data models. Updated authentication to token-based and reorganized file structure for better readability.">
+      <change afterPath="$PROJECT_DIR$/req.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/API_construct/API_connect.py" beforeDir="false" afterPath="$PROJECT_DIR$/API_construct/API_connect.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TODOS/todo_repository.py" beforeDir="false" afterPath="$PROJECT_DIR$/TODOS/todo_repository.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Users/user_repository.py" beforeDir="false" afterPath="$PROJECT_DIR$/Users/user_repository.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Users/user_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/Users/user_model.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,7 +57,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.keymap",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -262,7 +262,7 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/ToDoApp$todo_model.coverage" NAME="todo_model Coverage Results" MODIFIED="1728486081638" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/TODOS" />
-    <SUITE FILE_PATH="coverage/ToDoApp$Unnamed.coverage" NAME="Unnamed Coverage Results" MODIFIED="1728553878466" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/ToDoApp$Unnamed.coverage" NAME="Unnamed Coverage Results" MODIFIED="1728565706397" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/ToDoApp$mongo_connection.coverage" NAME="mongo_connection Coverage Results" MODIFIED="1728489585131" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/mongodb_connect" />
     <SUITE FILE_PATH="coverage/ToDoApp$main.coverage" NAME="main Coverage Results" MODIFIED="1728398128352" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/API_construct" />
     <SUITE FILE_PATH="coverage/ToDoApp$new_main.coverage" NAME="new_main Coverage Results" MODIFIED="1728462999072" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/API_construct" />

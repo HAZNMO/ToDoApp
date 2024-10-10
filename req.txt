@@ -1,0 +1,9 @@
+pydantic
+fastapi
+motor
+fastapi.security
+jwt
+uvicorn
+pydantic[email]
+bcrypt
+PyJWT
