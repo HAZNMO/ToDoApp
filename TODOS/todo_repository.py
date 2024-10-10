@@ -1,7 +1,6 @@
 from bson import ObjectId
 from TODOS.todo_model import TodoModel
 from mongodb_connect.mongo_connection import todo_collection
-from fastapi.security import HTTPBearer
 
 
 

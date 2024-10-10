@@ -1,10 +1,9 @@
 from contextlib import asynccontextmanager
-
 from fastapi import FastAPI, HTTPException, Depends
 from Users.user_repository import (
-    decode_token, get_user_todos, create_todo_item,
-    update_todo_item, delete_todo_item, register_user, authenticate_user
-)
+    get_user_todos, create_todo_item,
+    update_todo_item, delete_todo_item)
+from Users.user_authentification import authenticate_user, register_user, decode_token
 from TODOS.todo_model import TodoModel
 from Users.user_model import UserCreate, UserLogin, UserResponse
 
