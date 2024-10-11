@@ -55,7 +55,7 @@ class UpdateTODOModel(BaseModel):
     title: Optional[str] = Field(...)
     description: Optional[str] = Field(...)
     #created_at: datetime = Field(default_factory=current_time_factory)
-    status: Optional[TaskStatus] = TaskStatus.TO_DO.value
+    status: Optional[TaskStatus] = TaskStatus.TO_DO
     updated_at: datetime = Field(default_factory=current_time_factory)
     model_config = ConfigDict(
         json_encoders={
@@ -66,7 +66,7 @@ class UpdateTODOModel(BaseModel):
             "example": {
                 "title": "Walk the dog (Optional)",
                 "description": "Walk the dog after come back from school (Optional)",
-                "status": TaskStatus.TO_DO.value
+                "status": "To do"
             }
         },
     )
