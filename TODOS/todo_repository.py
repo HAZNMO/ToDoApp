@@ -8,9 +8,9 @@ async def get_todos(skip: int = 0, limit: int = 100):
     todos = await todos_cursor.to_list(length=limit)
     return todos
 
-async def get_todos(todo_id: str):
-    todo = await todo_collection.find_all({"_id": ObjectId(todo_id)})
-    return todo
+# async def get_todos(todo_id: str):
+#     todo = await todo_collection.find_all({"_id": ObjectId(todo_id)})
+#     return todo
 
 async def get_todo(todo_id: str):
     todo = await todo_collection.find_one({"_id": ObjectId(todo_id)})

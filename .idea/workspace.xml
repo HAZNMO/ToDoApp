@@ -4,11 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="64eb673f-cb88-41b6-b3c8-8eba8efa7374" name="Changes" comment="Refactor MongoDB setup and task management&#10;&#10;Simplified MongoDB connection initialization and refactored task/user management to use new data models. Updated authentication to token-based and reorganized file structure for better readability.">
-      <change afterPath="$PROJECT_DIR$/req.txt" afterDir="false" />
+    <list default="true" id="64eb673f-cb88-41b6-b3c8-8eba8efa7374" name="Changes" comment="Add requirements file and minor formatting changes&#10;&#10;Created req.txt to list project dependencies. Updated workspace.xml and formatted imports in API_connect.py for better readability. Minor whitespace adjustment in user_model.py.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/API_construct/API_connect.py" beforeDir="false" afterPath="$PROJECT_DIR$/API_construct/API_connect.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Users/user_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/Users/user_model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TODOS/todo_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/TODOS/todo_model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TODOS/todo_repository.py" beforeDir="false" afterPath="$PROJECT_DIR$/TODOS/todo_repository.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Users/user_collection.py" beforeDir="false" afterPath="$PROJECT_DIR$/Users/user_collection.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -233,7 +234,15 @@
       <option name="project" value="LOCAL" />
       <updated>1728548836980</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="Add requirements file and minor formatting changes&#10;&#10;Created req.txt to list project dependencies. Updated workspace.xml and formatted imports in API_connect.py for better readability. Minor whitespace adjustment in user_model.py.">
+      <option name="closed" value="true" />
+      <created>1728566073298</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1728566073298</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -258,11 +267,13 @@
     <MESSAGE value="Update MongoDB connection and task management&#10;&#10;Simplified the MongoDB connection initialization by removing the default URL and enabling invalid certificate allowance. Refactored task and user management functionalities to use new data models and added token-based authentication." />
     <MESSAGE value="Rename authentication file and add JWT-based methods&#10;&#10;Renamed the `athentification.py` to `user_authentification.py` for better clarity. Added JWT token generation, decoding, and user registration/authentication functions leveraging FastAPI and MongoDB." />
     <MESSAGE value="Refactor MongoDB setup and task management&#10;&#10;Simplified MongoDB connection initialization and refactored task/user management to use new data models. Updated authentication to token-based and reorganized file structure for better readability." />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactor MongoDB setup and task management&#10;&#10;Simplified MongoDB connection initialization and refactored task/user management to use new data models. Updated authentication to token-based and reorganized file structure for better readability." />
+    <MESSAGE value="Refactor MongoDB setup and task management&#10;&#10;Updated MongoDB connection initialization and refactored task and user management to utilize new data models. Enhanced authentication to be token-based for improved security. Reorganized file structure and improved function naming for clearer readability and maintainability." />
+    <MESSAGE value="Add requirements file and minor formatting changes&#10;&#10;Created req.txt to list project dependencies. Updated workspace.xml and formatted imports in API_connect.py for better readability. Minor whitespace adjustment in user_model.py." />
+    <option name="LAST_COMMIT_MESSAGE" value="" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/ToDoApp$todo_model.coverage" NAME="todo_model Coverage Results" MODIFIED="1728486081638" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/TODOS" />
-    <SUITE FILE_PATH="coverage/ToDoApp$Unnamed.coverage" NAME="Unnamed Coverage Results" MODIFIED="1728565706397" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/ToDoApp$Unnamed.coverage" NAME="Unnamed Coverage Results" MODIFIED="1728662613292" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/ToDoApp$mongo_connection.coverage" NAME="mongo_connection Coverage Results" MODIFIED="1728489585131" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/mongodb_connect" />
     <SUITE FILE_PATH="coverage/ToDoApp$main.coverage" NAME="main Coverage Results" MODIFIED="1728398128352" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/API_construct" />
     <SUITE FILE_PATH="coverage/ToDoApp$new_main.coverage" NAME="new_main Coverage Results" MODIFIED="1728462999072" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/API_construct" />
