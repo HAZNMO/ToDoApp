@@ -18,24 +18,14 @@ class TaskStatus(str, Enum):
 
 PyObjectId = Annotated[str, BeforeValidator(str)]
 
-# class PydanticObjectId(str):
-#     @classmethod
-#     def __get_validators__(cls):
-#         yield cls.validate
-#
-#     @classmethod
-#     def validate(cls, value):
-#         if not ObjectId.is_valid(value):
-#             raise ValueError('Invalid ObjectId')
-#         return str(value)
-
-
 class TodoModel(BaseModel):
     id: Optional[PyObjectId] = Field(alias="_id", default=None)
     title: str = Field(...)
     description: str = Field(...)
     created_at: datetime = Field(default_factory=current_time_factory)
     status: TaskStatus = Field(default=TaskStatus.TO_DO)
+    user_email: Optional[str] = Field(None)
+
     model_config = ConfigDict(
         populate_by_name=True,
         arbitrary_types_allowed=True,
@@ -46,6 +36,7 @@ class TodoModel(BaseModel):
             "example": {
                 "title": "Walk the dog",
                 "description": "Walk the dog after coming back from school",
+                "status": "To Do",
             }
         }
     )
@@ -54,7 +45,6 @@ class UpdateTODOModel(BaseModel):
     id: Optional[PyObjectId] = Field(alias="_id", default=None)
     title: Optional[str] = Field(...)
     description: Optional[str] = Field(...)
-    #created_at: datetime = Field(default_factory=current_time_factory)
     status: Optional[TaskStatus] = TaskStatus.TO_DO
     updated_at: datetime = Field(default_factory=current_time_factory)
     model_config = ConfigDict(
@@ -65,8 +55,7 @@ class UpdateTODOModel(BaseModel):
         json_schema_extra={
             "example": {
                 "title": "Walk the dog (Optional)",
-                "description": "Walk the dog after come back from school (Optional)",
-                "status": "To do"
+                "description": "Walk the dog after come back from school (Optional)"
             }
         },
     )
