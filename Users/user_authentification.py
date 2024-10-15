@@ -27,14 +27,6 @@ def hash_password(password: str) -> str:
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     return pwd_context.verify(plain_password, hashed_password)
 
-# def create_token(email: str) -> str:
-#     payload = {
-#         "email": email,
-#         "timestamp": datetime.now().isoformat()
-#     }
-#     token = jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
-#     return token
-
 
 # # Создание JWT токена
 def create_token(email: str) -> str:

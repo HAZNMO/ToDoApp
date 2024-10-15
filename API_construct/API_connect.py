@@ -8,8 +8,7 @@ from pymongo import ReturnDocument
 from Users.user_repository import (
     get_user_todos,update_todo_item, delete_todo_item)
 from Users.user_authentification import authenticate_user, register_user, decode_token
-from TODOS.todo_model import TodoModel, UpdateTODOModel, PyObjectId
-from TODOS.todo_repository import save_todo_item
+from TODOS.todo_model import TodoModel, UpdateTODOModel
 from Users.user_model import UserCreate, UserLogin, UserResponse
 from fastapi.security import HTTPBearer
 from mongodb_connect.mongo_connection import todo_collection
