@@ -62,6 +62,10 @@ async def register_user(name: str, email: str, password: str):
         "created_at": datetime.now()
     }
     result = await user_collection.insert_one(new_user)
+
+    if result.inserted_id is None:
+        raise HTTPException(status_code=500, detail="Failed to register user")
+
     return create_token(email)
 
 async def authenticate_user(email: str, password: str):
