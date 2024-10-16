@@ -35,14 +35,18 @@ async def create_todo(todo: TodoModel = Body(...), user_info: dict = Depends(dec
 @app.get("/get_todos", response_model=list[TodoModel])
 async def get_user_todos(
         user_info: dict = Depends(decode_token),
-        task_status: Optional[TaskStatus] = Query(None, description="Task status to filter by (To Do, In Progress, Done)")
-):
+        task_status: Optional[TaskStatus] = Query(None, description="Task status to filter by (To Do, In Progress, Done)")):
     user_email = user_info.get("email")
     query = {"user_email": user_email}
-    if status:
-        query["status"] = task_status
-    todos = await todo_collection.find(query).to_list(1000)
 
+    if task_status is None:
+        task_status = await todo_collection.find({"user_email": user_email}).to_list(1000)
+        return task_status
+
+    elif task_status:
+        query["status"] = task_status
+
+    todos = await todo_collection.find(query).to_list(1000)
     return todos
 
 @app.put("/todos/{todo_id}",
