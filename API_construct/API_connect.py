@@ -1,4 +1,3 @@
-from contextlib import asynccontextmanager
 from bson import ObjectId
 from fastapi import FastAPI, HTTPException, Depends, Body, status
 from pymongo import ReturnDocument
@@ -9,19 +8,7 @@ from fastapi.security import HTTPBearer
 from mongodb_connect.mongo_connection import todo_collection
 security = HTTPBearer()
 
-@asynccontextmanager
-async def lifespan(app):
-    from mongodb_connect.mongo_connection import mongodb_connection
-
-    try:
-        await mongodb_connection.client.admin.command("ping")
-    except Exception as e:
-        print("Mongo Error", e)
-        raise e
-
-    yield
-app = FastAPI(lifespan=lifespan)
-
+app = FastAPI()
 @app.post("/register", response_model=UserResponse)
 async def register(user: UserCreate):
     token = await register_user(user.name, user.email, user.password)
