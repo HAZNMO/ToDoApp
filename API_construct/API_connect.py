@@ -1,8 +1,9 @@
 from bson import ObjectId
-from fastapi import FastAPI, HTTPException, Depends, Body, status
+from typing import Optional
+from fastapi import FastAPI, HTTPException, Depends, Body, status, Query
 from pymongo import ReturnDocument
 from Users.user_authentification import authenticate_user, register_user, decode_token
-from TODOS.todo_model import TodoModel, UpdateTODOModel, current_time_factory
+from TODOS.todo_model import TodoModel, UpdateTODOModel, current_time_factory, TaskStatus
 from Users.user_model import UserCreate, UserLogin, UserResponse
 from fastapi.security import HTTPBearer
 from mongodb_connect.mongo_connection import todo_collection
@@ -31,13 +32,18 @@ async def create_todo(todo: TodoModel = Body(...), user_info: dict = Depends(dec
     return created_todo
 
 
-
 @app.get("/get_todos", response_model=list[TodoModel])
-async def get_user_todos(user_info: dict = Depends(decode_token)):
+async def get_user_todos(
+        user_info: dict = Depends(decode_token),
+        task_status: Optional[TaskStatus] = Query(None, description="Task status to filter by (To Do, In Progress, Done)")
+):
     user_email = user_info.get("email")
-    todos = await todo_collection.find({"user_email": user_email}).to_list(1000)
-    return todos
+    query = {"user_email": user_email}
+    if status:
+        query["status"] = task_status
+    todos = await todo_collection.find(query).to_list(1000)
 
+    return todos
 
 @app.put("/todos/{todo_id}",
          response_description="Update a to do",
