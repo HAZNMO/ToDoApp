@@ -3,7 +3,7 @@ from typing import Optional
 from fastapi import FastAPI, HTTPException, Depends, Body, status, Query
 from pymongo import ReturnDocument
 from Users.user_authentification import authenticate_user, register_user, decode_token
-from TODOS.todo_model import TodoModel, UpdateTODOModel, current_time_factory, TaskStatus
+from TODOS.todo_model import TodoModel, UpdateTODOModel, current_time_factory, TaskStatus, CreateTodoModel
 from Users.user_model import UserCreate, UserLogin, UserResponse
 from fastapi.security import HTTPBearer
 from mongodb_connect.mongo_connection import todo_collection
@@ -39,10 +39,10 @@ async def get_user_todos(
 
 @app.post("/create_todos",
           response_description="Add new to do",
-          response_model=TodoModel,
+          response_model=CreateTodoModel,
           status_code=status.HTTP_201_CREATED,
           response_model_by_alias=False)
-async def create_todo(todo: TodoModel = Body(...), user_info: dict = Depends(decode_token)):
+async def create_todo(todo: CreateTodoModel = Body(...), user_info: dict = Depends(decode_token)):
     todo.user_email = user_info.get("email")
     new_todo_data = todo.model_dump(by_alias=True, exclude_unset=True)
     new_todo_data['created_at'] = current_time_factory()  # Явно устанавливаем created_at
