@@ -20,10 +20,10 @@ PyObjectId = Annotated[str, BeforeValidator(str)]
 
 class TodoModel(BaseModel):
     id: Optional[PyObjectId] = Field(alias="_id", default=None)
+    created_at: datetime = Field(default_factory=current_time_factory)
     user_email: Optional[str] = Field(None)
     title: str = Field(...)
     description: str = Field(...)
-    created_at: datetime = Field(default_factory=current_time_factory)
     status: TaskStatus = Field(default=TaskStatus.TO_DO)
 
     model_config = ConfigDict(
@@ -46,6 +46,7 @@ class UpdateTODOModel(BaseModel):
     title: Optional[str] = Field(...)
     description: Optional[str] = Field(...)
     status: Optional[TaskStatus] = TaskStatus.TO_DO
+    #created_at: datetime = Field(default_factory=current_time_factory)
     updated_at: datetime = Field(default_factory=current_time_factory)
     model_config = ConfigDict(
         json_encoders={
