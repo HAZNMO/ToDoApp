@@ -20,18 +20,6 @@ async def login(user: UserLogin):
     token = await authenticate_user(user.email, user.password)
     return UserResponse(email=user.email, token=token)
 
-@app.post("/create_todos",
-          response_description="Add new to do",
-          response_model=TodoModel,
-          status_code=status.HTTP_201_CREATED,
-          response_model_by_alias=False)
-async def create_todo(todo: TodoModel = Body(...), user_info: dict = Depends(decode_token)):
-    todo.user_email = user_info.get("email")
-    new_todo = await todo_collection.insert_one(todo.model_dump(by_alias=True, exclude_unset=True))
-    created_todo = await todo_collection.find_one({"_id": new_todo.inserted_id})
-    return created_todo
-
-
 @app.get("/get_todos", response_model=list[TodoModel])
 async def get_user_todos(
         user_info: dict = Depends(decode_token),
@@ -49,12 +37,26 @@ async def get_user_todos(
     todos = await todo_collection.find(query).to_list(1000)
     return todos
 
+@app.post("/create_todos",
+          response_description="Add new to do",
+          response_model=TodoModel,
+          status_code=status.HTTP_201_CREATED,
+          response_model_by_alias=False)
+async def create_todo(todo: TodoModel = Body(...), user_info: dict = Depends(decode_token)):
+    todo.user_email = user_info.get("email")
+    new_todo_data = todo.model_dump(by_alias=True, exclude_unset=True)
+    new_todo_data['created_at'] = current_time_factory()  # Явно устанавливаем created_at
+    new_todo = await todo_collection.insert_one(new_todo_data)
+    created_todo = await todo_collection.find_one({"_id": new_todo.inserted_id})
+
+    return created_todo
+
 @app.put("/todos/{todo_id}",
          response_description="Update a to do",
-         response_model=TodoModel,
+         response_model=UpdateTODOModel,
          response_model_by_alias=False)
-async def update_todo(todo_id: str, todo: UpdateTODOModel = Body(...), user_info: dict = Depends(decode_token)):
-    update_data = {k: v for k, v in todo.model_dump(by_alias=True).items() if v is not None}
+async def update_todo(todo_id: str, todo_update: UpdateTODOModel = Body(...), user_info: dict = Depends(decode_token)):
+    update_data = {k: v for k, v in todo_update.model_dump(by_alias=True).items() if v is not None}
     update_data["updated_at"] = current_time_factory()
     update_data["user_email"] = user_info.get("email")
     update_result = await todo_collection.find_one_and_update(
@@ -67,7 +69,6 @@ async def update_todo(todo_id: str, todo: UpdateTODOModel = Body(...), user_info
         raise HTTPException(status_code=404, detail="Task not found or you do not have access to this todo")
 
     return update_result
-
 
 @app.delete("/todos/{todo_id}", response_description="Delete a to do")
 async def delete_todo(todo_id: str, user_info: dict = Depends(decode_token)):
