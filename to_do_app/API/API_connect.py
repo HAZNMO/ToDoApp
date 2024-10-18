@@ -2,11 +2,11 @@ from bson import ObjectId
 from typing import Optional
 from fastapi import FastAPI, HTTPException, Depends, Body, status, Query
 from pymongo import ReturnDocument
-from to_do_api.Domains.users.user_authentification import authenticate_user, register_user, decode_token
-from to_do_api.Domains.to_dos.schemas import TodoModel, UpdateTODOModel, current_time_factory, TaskStatus, CreateTodoModel
-from to_do_api.Domains.users.user_model import UserCreate, UserLogin, UserResponse
+from to_do_app.Domains.users.user_authentification import authenticate_user, register_user, decode_token
+from to_do_app.Domains.to_dos.schemas import TodoModel, UpdateTODOModel, current_time_factory, TaskStatus, CreateTodoModel
+from to_do_app.Domains.users.user_model import UserCreate, UserLogin, UserResponse
 from fastapi.security import HTTPBearer
-from to_do_api.Infrastructure.DB.mongo_db.mongo_construct import todo_collection
+from to_do_app.Infrastructure.DB.mongo_db.mongo_construct import todo_collection
 
 security = HTTPBearer()
 
