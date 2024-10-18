@@ -3,7 +3,7 @@ import os
 import secrets
 from fastapi import HTTPException,Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from to_do_api.mongodb_connect.mongo_connection import user_collection
+from to_do_api.Infrastructure.DB.mongo_db.mongo_construct import user_collection
 from datetime import datetime, timezone, timedelta
 from dotenv import load_dotenv
 from passlib.context import CryptContext
