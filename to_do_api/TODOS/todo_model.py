@@ -6,7 +6,6 @@ from enum import Enum
 from typing_extensions import Annotated
 from pydantic.functional_validators import BeforeValidator
 
-
 def current_time_factory() -> datetime:
     return datetime.now()
 
@@ -18,12 +17,11 @@ class TaskStatus(str, Enum):
 
 PyObjectId = Annotated[str, BeforeValidator(str)]
 
-
 class TodoModel(BaseModel):
     id: Optional[PyObjectId] = Field(alias="_id", default=None)
     created_at: datetime = Field(None, alias="created_at")
     updated_at: datetime = Field(None, alias="updated_at")
-    user_email: Optional[str] = Field(None)
+    user_id: Optional[PyObjectId] = Field(default=None)
     title: str = Field(...)
     description: str = Field(...)
     status: TaskStatus = Field(default=TaskStatus.TO_DO)
@@ -36,6 +34,7 @@ class TodoModel(BaseModel):
         },
         json_schema_extra={
             "example": {
+                "_id": str(ObjectId()),
                 "title": "Walk the dog",
                 "description": "Walk the dog after coming back from school",
                 "status": "To Do",
@@ -46,7 +45,7 @@ class TodoModel(BaseModel):
 class CreateTodoModel(BaseModel):
     id: Optional[PyObjectId] = Field(alias="_id", default=None)
     created_at: datetime = Field(default_factory=current_time_factory)
-    user_email: Optional[str] = Field(None)
+    user_id: Optional[PyObjectId] = Field(default=None)
     title: str = Field(...)
     description: str = Field(...)
     status: TaskStatus = Field(default=TaskStatus.TO_DO)
@@ -68,6 +67,7 @@ class CreateTodoModel(BaseModel):
 
 class UpdateTODOModel(BaseModel):
     id: Optional[PyObjectId] = Field(alias="_id", default=None)
+    user_id: Optional[PyObjectId] = Field(default=None)
     title: Optional[str] = Field(...)
     description: Optional[str] = Field(...)
     status: Optional[TaskStatus] = Field(default=TaskStatus.TO_DO)

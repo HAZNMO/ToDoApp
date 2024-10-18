@@ -29,9 +29,10 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
 
 
 # # Создание JWT токена
-def create_token(email: str) -> str:
+def create_token(user_id: str, email: str) -> str:
     expiration = utcnow() + timedelta(minutes=TOKEN_EXPIRE_MINUTES)
     payload = {
+        "_id": user_id,
         "email": email,
         "exp": expiration,
         "timestamp": utcnow().isoformat()  # UTC для согласованности
@@ -66,12 +67,14 @@ async def register_user(name: str, email: str, password: str):
     if result.inserted_id is None:
         raise HTTPException(status_code=500, detail="Failed to register user")
 
-    return create_token(email)
+    user_id = str(result.inserted_id)
+    return create_token(user_id, email)
 
 async def authenticate_user(email: str, password: str):
     user = await user_collection.find_one({"email": email})
     if user and verify_password(password, user["password"]):
-        return create_token(email)
+        user_id = str(user["_id"])
+        return create_token(user_id, email)
     raise HTTPException(status_code=400, detail="Incorrect email or password")
 
 

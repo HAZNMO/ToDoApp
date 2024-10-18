@@ -20,7 +20,7 @@ class MongoDBConnection:
         try:
             self.client = AsyncIOMotorClient(mongo_url, tlsAllowInvalidCertificates=True)
             self.database = self.client[database_name]
-            logger.info(f"Connection to the database {database_name} established.")
+            logger.info(f" Connection to the database {database_name} established.")
         except Exception as e:
             logger.error(f"MongoDB connection error: {e}")
             raise ConnectionError("Failed to connect to MongoDB.") from e
@@ -28,7 +28,7 @@ class MongoDBConnection:
     def get_collection(self, collection_name):
         try:
             collection = self.database[collection_name]
-            logger.info(f"Collection '{collection_name}' retrieved successfully.")
+            logger.info(f" Collection '{collection_name}' retrieved successfully.")
             return collection
         except Exception as e:
             logger.error(f"Error retrieving the collection '{collection_name}': {e}")
