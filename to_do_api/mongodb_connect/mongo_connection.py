@@ -14,25 +14,25 @@ class MongoDBConnection:
         mongo_url = os.getenv("MONGO_URL")
 
         if not mongo_url:
-            logger.error("MONGO_URL не установлен. Проверьте переменные окружения.")
-            raise ValueError("Отсутствует MONGO_URL")
+            logger.error("MONGO_URL is not set. Please check the environment variables.")
+            raise ValueError("MONGO_URL is missing.")
 
         try:
             self.client = AsyncIOMotorClient(mongo_url, tlsAllowInvalidCertificates=True)
             self.database = self.client[database_name]
-            logger.info(f"Подключение к базе данных {database_name} установлено.")
+            logger.info(f"Connection to the database {database_name} established.")
         except Exception as e:
-            logger.error(f"Ошибка подключения к MongoDB: {e}")
-            raise ConnectionError("Не удалось подключиться к MongoDB") from e
+            logger.error(f"MongoDB connection error: {e}")
+            raise ConnectionError("Failed to connect to MongoDB.") from e
 
     def get_collection(self, collection_name):
         try:
             collection = self.database[collection_name]
-            logger.info(f"Коллекция '{collection_name}' успешно получена.")
+            logger.info(f"Collection '{collection_name}' retrieved successfully.")
             return collection
         except Exception as e:
-            logger.error(f"Ошибка при получении коллекции '{collection_name}': {e}")
-            raise ValueError(f"Ошибка при доступе к коллекции '{collection_name}'") from e
+            logger.error(f"Error retrieving the collection '{collection_name}': {e}")
+            raise ValueError(f"Error accessing the collection '{collection_name}'") from e
 
 
 mongodb_connection = MongoDBConnection()
