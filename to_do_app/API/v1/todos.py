@@ -2,16 +2,16 @@ from typing import Optional
 from fastapi import APIRouter
 from fastapi import Depends, Body, status, Query
 from to_do_app.dependences.auth.dependeces import decode_token
-from to_do_app.domains.to_dos.flow import get_user_todos
-from to_do_app.domains.to_dos.service import create_todo, update_todo, delete_todo
-from to_do_app.domains.to_dos.schemas import TodoModel, UpdateTODOModel, TaskStatus, CreateTodoModel
+from to_do_app.domains.todos.flow import get_todos
+from to_do_app.domains.todos.service import create_todo, update_todo, delete_todo
+from to_do_app.domains.todos.schemas import TodoModel, UpdateTODOModel, TaskStatus, CreateTodoModel
 
 to_dos_router = APIRouter(prefix="/todos")
 @to_dos_router.get("/get_todos", response_model=list[TodoModel])
 async def get_todos_route(
     task_status: Optional[TaskStatus] = Query(None, description="Task status to filter by (To Do, In Progress, Done)"),
     user_info: dict = Depends(decode_token)):
-    return await get_user_todos(user_info=user_info, task_status=task_status)
+    return await get_todos(user_info=user_info, task_status=task_status)
 
 @to_dos_router.post("/create_todos",
           response_description="Add new to do",
