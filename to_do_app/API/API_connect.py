@@ -2,14 +2,14 @@ from bson import ObjectId
 from typing import Optional
 from fastapi import FastAPI, HTTPException, Depends, Body, status, Query
 from pymongo import ReturnDocument
-from to_do_app.Domains.users.user_authentification import authenticate_user, register_user, decode_token
-from to_do_app.Domains.to_dos.schemas import TodoModel, UpdateTODOModel, current_time_factory, TaskStatus, CreateTodoModel
-from to_do_app.Domains.users.user_model import UserCreate, UserLogin, UserResponse
+from to_do_app.dependences.auth.dependeces import decode_token
+from to_do_app.domains.users.flow import authenticate_user, register_user
+from to_do_app.domains.to_dos.schemas import TodoModel, UpdateTODOModel, current_time_factory, TaskStatus, CreateTodoModel
+from to_do_app.domains.users.schemas import UserCreate, UserLogin, UserResponse
 from fastapi.security import HTTPBearer
 from to_do_app.Infrastructure.DB.mongo_db.mongo_construct import todo_collection
 
 security = HTTPBearer()
-
 app = FastAPI()
 @app.post("/register", response_model=UserResponse)
 async def register(user: UserCreate):
@@ -20,7 +20,6 @@ async def register(user: UserCreate):
 async def login(user: UserLogin):
     token = await authenticate_user(user.email, user.password)
     return UserResponse(email=user.email, token=token)
-
 
 @app.get("/get_todos", response_model=list[TodoModel])
 async def get_user_todos(
@@ -46,6 +45,7 @@ async def get_user_todos(
           response_model_by_alias=False)
 async def create_todo(todo: CreateTodoModel = Body(...), user_info: dict = Depends(decode_token)):
     todo.user_id = user_info.get("_id")
+
     new_todo_data = todo.model_dump(by_alias=True, exclude_unset=True)
     new_todo_data['created_at'] = current_time_factory()
     new_todo = await todo_collection.insert_one(new_todo_data)

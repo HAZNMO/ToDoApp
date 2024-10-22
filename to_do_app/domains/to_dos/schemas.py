@@ -9,7 +9,6 @@ from pydantic.functional_validators import BeforeValidator
 def current_time_factory() -> datetime:
     return datetime.now()
 
-
 class TaskStatus(str, Enum):
     TO_DO = "To Do"
     IN_PROGRESS = "In Progress"
