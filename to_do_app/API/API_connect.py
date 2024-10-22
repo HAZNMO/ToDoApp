@@ -3,7 +3,7 @@ from typing import Optional
 from fastapi import FastAPI, HTTPException, Depends, Body, status, Query
 from pymongo import ReturnDocument
 from to_do_app.dependences.auth.dependeces import decode_token
-from to_do_app.domains.users.flow import authenticate_user, register_user
+from to_do_app.domains.users.flow import register, login
 from to_do_app.domains.to_dos.schemas import TodoModel, UpdateTODOModel, current_time_factory, TaskStatus, CreateTodoModel
 from to_do_app.domains.users.schemas import UserCreate, UserLogin, UserResponse
 from fastapi.security import HTTPBearer
@@ -12,14 +12,12 @@ from to_do_app.Infrastructure.DB.mongo_db.mongo_construct import todo_collection
 security = HTTPBearer()
 app = FastAPI()
 @app.post("/register", response_model=UserResponse)
-async def register(user: UserCreate):
-    token = await register_user(user.name, user.email, user.password)
-    return UserResponse(email=user.email, token=token)
+async def register_route(user: UserCreate):
+    return await register(user)
 
 @app.post("/login", response_model=UserResponse)
-async def login(user: UserLogin):
-    token = await authenticate_user(user.email, user.password)
-    return UserResponse(email=user.email, token=token)
+async def login_route(user: UserLogin):
+    return await login(user)
 
 @app.get("/get_todos", response_model=list[TodoModel])
 async def get_user_todos(
