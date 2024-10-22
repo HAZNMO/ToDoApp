@@ -4,6 +4,6 @@ motor
 fastapi.security
 jwt
 uvicorn
-pydantic[email]
+"pydantic[email,timezone]"
 bcrypt
 PyJWT
