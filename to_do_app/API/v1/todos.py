@@ -5,14 +5,14 @@ from to_do_app.dependences.auth.dependeces import decode_token
 from to_do_app.domains.todos.flow import create_todo, update_todo, delete_todo, get_todos
 from to_do_app.domains.todos.schemas import TodoModel, UpdateTODOModel, TaskStatus, CreateTodoModel
 
-todos_router = APIRouter(prefix="/todos")
-@todos_router.get("/get_todos", response_model=list[TodoModel])
+todos_router = APIRouter()
+@todos_router.get("/todos", response_model=list[TodoModel])
 async def get_todos_route(
     task_status: Optional[TaskStatus] = Query(None, description="Task status to filter by (To Do, In Progress, Done)"),
     user_info: dict = Depends(decode_token)):
     return await get_todos(user_info=user_info, task_status=task_status)
 
-@todos_router.post("/create_todos",
+@todos_router.post("/todos",
           response_description="Add new to do",
           response_model=CreateTodoModel,
           status_code=status.HTTP_201_CREATED,
