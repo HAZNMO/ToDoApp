@@ -3,14 +3,15 @@ from fastapi import APIRouter
 from fastapi import Depends, Body, status, Query
 from to_do_app.dependences.auth.dependeces import decode_token
 from to_do_app.domains.todos.flow import create_todo, update_todo, delete_todo, get_todos
-from to_do_app.domains.todos.schemas import TodoModel, UpdateTODOModel, TaskStatus, CreateTodoModel
+from to_do_app.domains.todos.schemas import TodoModel, UpdateTODOModel, TaskStatus, CreateTodoModel, TodoList
 
 todos_router = APIRouter()
-@todos_router.get("/todos", response_model=list[TodoModel])
+@todos_router.get("/todos", response_model=list[TodoList])
 async def get_todos_route(
     task_status: Optional[TaskStatus] = Query(None, description="Task status to filter by (To Do, In Progress, Done)"),
     user_info: dict = Depends(decode_token)):
-    return await get_todos(user_info=user_info, task_status=task_status)
+    user_id = user_info.get("_id")
+    return await get_todos(context=TodoList(task_status=task_status, user_id= user_id))
 
 @todos_router.post("/todos",
           response_description="Add new to do",
@@ -18,7 +19,10 @@ async def get_todos_route(
           status_code=status.HTTP_201_CREATED,
           response_model_by_alias=False)
 async def create_todo_route(todo: CreateTodoModel = Body(...), user_info: dict = Depends(decode_token)):
-    return await create_todo(todo, user_info)
+    user_id = user_info.get("_id")
+    todo_with_user_id = todo.copy(update={"user_id": user_id})
+    return await create_todo(context=todo_with_user_id)
+
 
 @todos_router.put("/todos/{todo_id}",
          response_description="Update a to do",

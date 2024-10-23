@@ -16,6 +16,11 @@ class TaskStatus(str, Enum):
 
 PyObjectId = Annotated[str, BeforeValidator(str)]
 
+
+class TodoList(BaseModel):
+    user_id: Optional[str] = None
+    task_status: Optional[TaskStatus] = None
+
 class TodoModel(BaseModel):
     id: Optional[PyObjectId] = Field(alias="_id", default=None)
     created_at: datetime = Field(None, alias="created_at")
@@ -84,3 +89,4 @@ class UpdateTODOModel(BaseModel):
             }
         },
     )
+

@@ -10,7 +10,7 @@ from passlib.context import CryptContext
 def utcnow():
     return datetime.now(tz=timezone.utc)
 
-TOKEN_EXPIRE_MINUTES = 30  # Время действия токена в минутах
+TOKEN_EXPIRE_MINUTES = 300  # Время действия токена в минутах
 
 security = HTTPBearer()
 load_dotenv()
