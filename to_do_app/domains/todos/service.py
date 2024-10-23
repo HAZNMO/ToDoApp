@@ -23,7 +23,7 @@ async def get_user_todos(
     todos = await todo_collection.find(query).to_list(1000)
     return todos
 
-async def create_todo(todo: CreateTodoModel = Body(...), user_info: dict = Depends(decode_token)):
+async def create_user_todo(todo: CreateTodoModel = Body(...), user_info: dict = Depends(decode_token)):
     todo.user_id = user_info.get("_id")
 
     new_todo_data = todo.model_dump(by_alias=True, exclude_unset=True)
@@ -33,7 +33,7 @@ async def create_todo(todo: CreateTodoModel = Body(...), user_info: dict = Depen
     created_todo = await todo_collection.find_one({"_id": new_todo.inserted_id})
     return created_todo
 
-async def update_todo(todo_id: str, todo_update: UpdateTODOModel = Body(...), user_info: dict = Depends(decode_token)):
+async def update_user_todo(todo_id: str, todo_update: UpdateTODOModel = Body(...), user_info: dict = Depends(decode_token)):
     update_data = {k: v for k, v in todo_update.model_dump(by_alias=True).items() if v is not None}
     update_data["updated_at"] = current_time_factory()
     update_data["user_id"] = user_info.get("_id")
@@ -48,7 +48,7 @@ async def update_todo(todo_id: str, todo_update: UpdateTODOModel = Body(...), us
 
     return update_result
 
-async def delete_todo(todo_id: str, user_info: dict = Depends(decode_token)):
+async def delete_user_todo(todo_id: str, user_info: dict = Depends(decode_token)):
     user_id = user_info.get("_id")
     delete_result = await todo_collection.delete_one({"_id": ObjectId(todo_id), "user_id": user_id})
 

@@ -2,8 +2,7 @@ from typing import Optional
 from fastapi import APIRouter
 from fastapi import Depends, Body, status, Query
 from to_do_app.dependences.auth.dependeces import decode_token
-from to_do_app.domains.todos.flow import get_todos
-from to_do_app.domains.todos.service import create_todo, update_todo, delete_todo
+from to_do_app.domains.todos.flow import create_todo, update_todo, delete_todo, get_todos
 from to_do_app.domains.todos.schemas import TodoModel, UpdateTODOModel, TaskStatus, CreateTodoModel
 
 todos_router = APIRouter(prefix="/todos")
