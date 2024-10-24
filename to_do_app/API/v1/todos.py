@@ -24,7 +24,6 @@ async def create_todo_route(todo: CreateTodoModel = Body(...), user_info: dict =
     todo_with_user_id = todo.model_copy(update={"user_id": user_id})
     return await create_todo(context=todo_with_user_id)
 
-
 @todos_router.put("/todos/{todo_id}",
          response_description="Update a to do",
          response_model=UpdateTODOModel,
