@@ -6,12 +6,12 @@ from to_do_app.domains.todos.flow import create_todo, update_todo, delete_todo, 
 from to_do_app.domains.todos.schemas import TodoModel, UpdateTODOModel, TaskStatus, CreateTodoModel, TodoList
 
 todos_router = APIRouter()
-@todos_router.get("/todos", response_model=list[TodoList])
+@todos_router.get("/todos", response_model=list[TodoModel])
 async def get_todos_route(
     task_status: Optional[TaskStatus] = Query(None, description="Task status to filter by (To Do, In Progress, Done)"),
     user_info: dict = Depends(decode_token)):
     user_id = user_info.get("_id")
-    return await get_todos(context=TodoList(task_status=task_status, user_id= user_id))
+    return await get_todos(context=TodoList(task_status=task_status, user_id=user_id))
 
 @todos_router.post("/todos",
           response_description="Add new to do",

@@ -18,6 +18,7 @@ async def get_user_todos(user_todos: TodoList):
     todos = await todo_collection.find(query).to_list(1000)
     return todos
 
+
 async def create_user_todo(create_todos: CreateTodoModel):
     new_todo_data = create_todos.model_dump(by_alias=True, exclude_unset=True)
     new_todo_data['user_id'] = create_todos.user_id

@@ -18,7 +18,7 @@ PyObjectId = Annotated[str, BeforeValidator(str)]
 
 
 class TodoList(BaseModel):
-    user_id: Optional[str] = None
+    user_id: str
     task_status: Optional[TaskStatus] = None
 
 class TodoModel(BaseModel):
