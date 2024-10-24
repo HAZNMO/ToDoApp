@@ -20,7 +20,7 @@ async def get_todos_route(
           response_model_by_alias=False)
 async def create_todo_route(todo: CreateTodoModel = Body(...), user_info: dict = Depends(decode_token)):
     user_id = user_info.get("_id")
-    todo_with_user_id = todo.copy(update={"user_id": user_id})
+    todo_with_user_id = todo.model_copy(update={"user_id": user_id})
     return await create_todo(context=todo_with_user_id)
 
 
