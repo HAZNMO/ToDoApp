@@ -21,6 +21,10 @@ class TodoList(BaseModel):
     user_id: str
     task_status: Optional[TaskStatus] = None
 
+class DeleteTodoModel(BaseModel):
+    todo_id:str
+    user_id: str
+
 class TodoModel(BaseModel):
     id: Optional[PyObjectId] = Field(alias="_id", default=None)
     created_at: datetime = Field(None, alias="created_at")

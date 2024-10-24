@@ -3,7 +3,8 @@ from fastapi import APIRouter
 from fastapi import Depends, Body, status, Query
 from to_do_app.dependences.auth.dependeces import decode_token
 from to_do_app.domains.todos.flow import create_todo, update_todo, delete_todo, get_todos
-from to_do_app.domains.todos.schemas import TodoModel, UpdateTODOModel, TaskStatus, CreateTodoModel, TodoList
+from to_do_app.domains.todos.schemas import TodoModel, UpdateTODOModel, TaskStatus, CreateTodoModel, TodoList, \
+    DeleteTodoModel
 
 todos_router = APIRouter()
 @todos_router.get("/todos", response_model=list[TodoModel])
@@ -29,8 +30,12 @@ async def create_todo_route(todo: CreateTodoModel = Body(...), user_info: dict =
          response_model=UpdateTODOModel,
          response_model_by_alias=False)
 async def update_todo_route(todo_id: str, todo_update: UpdateTODOModel = Body(...), user_info: dict = Depends(decode_token)):
-    return await update_todo(todo_id,todo_update,user_info)
+    user_id = user_info.get("_id")
+    todo_id_and_user_id = todo_update.model_copy(update={"todo_id": todo_id, "user_id": user_id})
+    return await update_todo(context=todo_id_and_user_id)
 
 @todos_router.delete("/todos/{todo_id}", response_description="Delete a to do")
 async def delete_todo_route(todo_id: str, user_info: dict = Depends(decode_token)):
-    return await delete_todo(todo_id,user_info)
+    user_id = user_info.get("_id")
+    delete_todo_model = DeleteTodoModel(todo_id=todo_id, user_id=user_id)
+    return await delete_todo(context=delete_todo_model)

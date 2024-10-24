@@ -1,8 +1,8 @@
-from to_do_app.dependences.auth.dependeces import decode_token
 from to_do_app.Infrastructure.DB.mongo_db.mongo_construct import todo_collection
-from to_do_app.domains.todos.schemas import UpdateTODOModel, current_time_factory, CreateTodoModel, TodoList, TodoModel
+from to_do_app.domains.todos.schemas import UpdateTODOModel, current_time_factory, CreateTodoModel, TodoList, \
+    DeleteTodoModel
 from pymongo import ReturnDocument
-from fastapi import HTTPException, Depends, Body
+from fastapi import HTTPException
 from bson import ObjectId
 
 async def get_user_todos(user_todos: TodoList):
@@ -17,7 +17,6 @@ async def get_user_todos(user_todos: TodoList):
 
     todos = await todo_collection.find(query).to_list(1000)
     return todos
-
 
 async def create_user_todo(create_todos: CreateTodoModel):
     new_todo_data = create_todos.model_dump(by_alias=True, exclude_unset=True)
@@ -45,11 +44,12 @@ async def update_user_todo(update_todos: UpdateTODOModel):
 
     return update_result
 
-async def delete_user_todo(todo_id: str, user_info: dict = Depends(decode_token)):
-    user_id = user_info.get("_id")
-    delete_result = await todo_collection.delete_one({"_id": ObjectId(todo_id), "user_id": user_id})
+
+async def delete_user_todo(delete_todos: DeleteTodoModel):
+    delete_result = await todo_collection.delete_one(
+        {"_id": ObjectId(delete_todos.todo_id), "user_id": delete_todos.user_id})
 
     if delete_result.deleted_count == 1:
-        return {"message": f"Task with ID {todo_id} was successfully deleted."}
+        return {"message": f"Task with ID {delete_todos.todo_id} was successfully deleted."}
 
     raise HTTPException(status_code=404, detail="Task not found or access denied")
