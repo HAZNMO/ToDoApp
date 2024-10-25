@@ -1,11 +1,9 @@
 import jwt
-import os
-import secrets
 from fastapi import HTTPException, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from datetime import datetime, timezone, timedelta
-from dotenv import load_dotenv
 from passlib.context import CryptContext
+from to_do_app.core.config import settings
 
 
 def utcnow():
@@ -15,11 +13,9 @@ def utcnow():
 TOKEN_EXPIRE_MINUTES = 30
 
 security = HTTPBearer()
-load_dotenv()
 
-JWT_SECRET = os.getenv("JWT_SECRET", secrets.token_hex(16))
-print(JWT_SECRET)
-JWT_ALGORITHM = "HS256"
+JWT_SECRET = settings.JWT_SECRET
+JWT_ALGORITHM = settings.JWT_ALGORITHM
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
