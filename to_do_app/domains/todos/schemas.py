@@ -6,13 +6,16 @@ from enum import Enum
 from typing_extensions import Annotated
 from pydantic.functional_validators import BeforeValidator
 
+
 def current_time_factory() -> datetime:
     return datetime.now()
+
 
 class TaskStatus(str, Enum):
     TO_DO = "To Do"
     IN_PROGRESS = "In Progress"
     DONE = "Done"
+
 
 PyObjectId = Annotated[str, BeforeValidator(str)]
 
@@ -21,9 +24,11 @@ class TodoList(BaseModel):
     user_id: str
     task_status: Optional[TaskStatus] = None
 
+
 class DeleteTodoModel(BaseModel):
-    todo_id:str
+    todo_id: str
     user_id: str
+
 
 class TodoModel(BaseModel):
     id: Optional[PyObjectId] = Field(alias="_id", default=None)
@@ -38,7 +43,9 @@ class TodoModel(BaseModel):
         populate_by_name=True,
         arbitrary_types_allowed=True,
         json_encoders={
-            datetime: lambda v: v.strftime('%Y-%m-%d/%H:%M:%S') if v is not None else None
+            datetime: lambda v: (
+                v.strftime("%Y-%m-%d/%H:%M:%S") if v is not None else None
+            )
         },
         json_schema_extra={
             "example": {
@@ -47,8 +54,9 @@ class TodoModel(BaseModel):
                 "description": "Walk the dog after coming back from school",
                 "status": "To Do",
             }
-        }
+        },
     )
+
 
 class CreateTodoModel(BaseModel):
     id: Optional[PyObjectId] = Field(alias="_id", default=None)
@@ -61,17 +69,16 @@ class CreateTodoModel(BaseModel):
     model_config = ConfigDict(
         populate_by_name=True,
         arbitrary_types_allowed=True,
-        json_encoders={
-            datetime: lambda v: v.strftime('%Y-%m-%d/%H:%M:%S')
-        },
+        json_encoders={datetime: lambda v: v.strftime("%Y-%m-%d/%H:%M:%S")},
         json_schema_extra={
             "example": {
                 "title": "Walk the dog",
                 "description": "Walk the dog after coming back from school",
                 "status": "To Do",
             }
-        }
+        },
     )
+
 
 class UpdateTODOModel(BaseModel):
     id: Optional[PyObjectId] = Field(alias="_id", default=None)
@@ -84,13 +91,13 @@ class UpdateTODOModel(BaseModel):
     model_config = ConfigDict(
         json_encoders={
             ObjectId: str,
-            datetime: lambda v: v.strftime('%Y-%m-%d/%H:%M:%S')},
+            datetime: lambda v: v.strftime("%Y-%m-%d/%H:%M:%S"),
+        },
         arbitrary_types_allowed=True,
         json_schema_extra={
             "example": {
                 "title": "Walk the dog (Optional)",
-                "description": "Walk the dog after coming back from school (Optional)"
+                "description": "Walk the dog after coming back from school (Optional)",
             }
         },
     )
-

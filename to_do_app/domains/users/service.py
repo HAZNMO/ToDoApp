@@ -1,5 +1,9 @@
 from to_do_app.Infrastructure.DB.mongo_db.mongo_construct import user_collection
-from to_do_app.dependences.auth.dependeces import hash_password, verify_password, create_token
+from to_do_app.dependencies.auth.dependencies import (
+    hash_password,
+    verify_password,
+    create_token,
+)
 from to_do_app.domains.users.schemas import UserCreate, UserLogin
 from fastapi import HTTPException
 from datetime import datetime
@@ -15,7 +19,7 @@ async def register_user(user_create: UserCreate):
         "name": user_create.name,
         "email": user_create.email,
         "password": hashed_password,
-        "created_at": datetime.now()
+        "created_at": datetime.now(),
     }
 
     result = await user_collection.insert_one(new_user)

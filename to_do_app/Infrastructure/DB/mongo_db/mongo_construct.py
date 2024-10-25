@@ -14,11 +14,15 @@ class MongoDBConnection:
         mongo_url = os.getenv("MONGO_URL")
 
         if not mongo_url:
-            logger.error("MONGO_URL is not set. Please check the environment variables.")
+            logger.error(
+                "MONGO_URL is not set. Please check the environment variables."
+            )
             raise ValueError("MONGO_URL is missing.")
 
         try:
-            self.client = AsyncIOMotorClient(mongo_url, tlsAllowInvalidCertificates=True)
+            self.client = AsyncIOMotorClient(
+                mongo_url, tlsAllowInvalidCertificates=True
+            )
             self.database = self.client[database_name]
             logger.info(f" Connection to the database {database_name} established.")
         except Exception as e:
@@ -32,7 +36,9 @@ class MongoDBConnection:
             return collection
         except Exception as e:
             logger.error(f"Error retrieving the collection '{collection_name}': {e}")
-            raise ValueError(f"Error accessing the collection '{collection_name}'") from e
+            raise ValueError(
+                f"Error accessing the collection '{collection_name}'"
+            ) from e
 
 
 mongodb_connection = MongoDBConnection()
