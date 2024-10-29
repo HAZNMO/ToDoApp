@@ -1,11 +1,10 @@
-from motor.motor_asyncio import AsyncIOMotorClient
-import os
 import logging
+import os
+
 from dotenv import load_dotenv
+from motor.motor_asyncio import AsyncIOMotorClient
 
-logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-
 load_dotenv()
 
 
@@ -14,31 +13,34 @@ class MongoDBConnection:
         mongo_url = os.getenv("MONGO_URL")
 
         if not mongo_url:
-            logger.error(
+            error_message = (
                 "MONGO_URL is not set. Please check the environment variables."
             )
-            raise ValueError("MONGO_URL is missing.")
+            logger.error(error_message)
+            missing_mongo_url_message = "MONGO_URL is missing."
+            raise ValueError(missing_mongo_url_message)
 
         try:
             self.client = AsyncIOMotorClient(
                 mongo_url, tlsAllowInvalidCertificates=True
             )
             self.database = self.client[database_name]
-            logger.info(f" Connection to the database {database_name} established.")
+            logger.info("Connection to the database %s established.", database_name)
         except Exception as e:
-            logger.error(f"MongoDB connection error: {e}")
-            raise ConnectionError("Failed to connect to MongoDB.") from e
+            connection_error_message = "Failed to connect to MongoDB."
+            logger.exception(connection_error_message)
+            raise ConnectionError(connection_error_message) from e
 
     def get_collection(self, collection_name):
         try:
             collection = self.database[collection_name]
-            logger.info(f" Collection '{collection_name}' retrieved successfully.")
+            logger.info("Collection '%s' retrieved successfully.", collection_name)
+        except Exception:
+            error_message = f"Error accessing the collection '{collection_name}'"
+            logger.exception("%s: ", error_message)
+            raise ValueError(error_message) from None
+        else:
             return collection
-        except Exception as e:
-            logger.error(f"Error retrieving the collection '{collection_name}': {e}")
-            raise ValueError(
-                f"Error accessing the collection '{collection_name}'"
-            ) from e
 
 
 mongodb_connection = MongoDBConnection()

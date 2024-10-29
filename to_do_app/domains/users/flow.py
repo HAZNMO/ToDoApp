@@ -1,5 +1,8 @@
-from to_do_app.domains.users.service import authenticate_user, register_user
-from to_do_app.domains.users.schemas import UserCreate, UserLogin, UserResponse
+from to_do_app.domains.users.schemas import UserCreate
+from to_do_app.domains.users.schemas import UserLogin
+from to_do_app.domains.users.schemas import UserResponse
+from to_do_app.domains.users.service import authenticate_user
+from to_do_app.domains.users.service import register_user
 
 
 async def register(context: UserCreate):

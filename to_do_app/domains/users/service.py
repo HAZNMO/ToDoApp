@@ -1,16 +1,16 @@
-from to_do_app.Infrastructure.DB.mongo_db.mongo_construct import user_collection
-from to_do_app.dependencies.auth.dependencies import (
-    hash_password,
-    verify_password,
-    create_token,
-)
-from to_do_app.domains.users.schemas import UserCreate, UserLogin
 from fastapi import HTTPException
-from datetime import datetime
+
+from to_do_app.core.config import utcnow
+from to_do_app.dependencies.auth.dependencies import create_token
+from to_do_app.dependencies.auth.dependencies import hash_password
+from to_do_app.dependencies.auth.dependencies import verify_password
+from to_do_app.domains.users.schemas import UserCreate
+from to_do_app.domains.users.schemas import UserLogin
+from to_do_app.Infrastructure.DB.mongo_db.mongo_construct import user_collection
 
 
-async def register_user(user_create: UserCreate):
-    user_exists = await user_collection.find_one({"email": user_create.email})
+async def register_user(user_create: UserCreate, collection=user_collection):
+    user_exists = await collection.find_one({"email": user_create.email})
     if user_exists:
         raise HTTPException(status_code=400, detail="Email already registered")
 
@@ -19,10 +19,10 @@ async def register_user(user_create: UserCreate):
         "name": user_create.name,
         "email": user_create.email,
         "password": hashed_password,
-        "created_at": datetime.now(),
+        "created_at": utcnow(),
     }
 
-    result = await user_collection.insert_one(new_user)
+    result = await collection.insert_one(new_user)
 
     if result.inserted_id is None:
         raise HTTPException(status_code=500, detail="Failed to register user")

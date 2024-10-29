@@ -1,7 +1,11 @@
-from fastapi.security import HTTPBearer
 from fastapi import APIRouter
-from to_do_app.domains.users.flow import register, login
-from to_do_app.domains.users.schemas import UserCreate, UserLogin, UserResponse
+from fastapi.security import HTTPBearer
+
+from to_do_app.domains.users.flow import login
+from to_do_app.domains.users.flow import register
+from to_do_app.domains.users.schemas import UserCreate
+from to_do_app.domains.users.schemas import UserLogin
+from to_do_app.domains.users.schemas import UserResponse
 
 security = HTTPBearer()
 users_router = APIRouter(prefix="/users")

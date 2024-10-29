@@ -1,4 +1,7 @@
 import secrets
+from datetime import UTC
+from datetime import datetime
+
 from pydantic_settings import BaseSettings
 
 
@@ -9,6 +12,10 @@ class Settings(BaseSettings):
 
     class Config:
         env_file = ".env"
+
+
+def utcnow() -> datetime:
+    return datetime.now(tz=UTC)
 
 
 settings = Settings()

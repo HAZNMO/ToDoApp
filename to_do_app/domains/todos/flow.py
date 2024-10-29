@@ -1,11 +1,11 @@
-from to_do_app.domains.todos.schemas import TodoList, DeleteTodoModel
-from to_do_app.domains.todos.service import (
-    get_user_todos,
-    create_user_todo,
-    update_user_todo,
-    delete_user_todo,
-)
-from to_do_app.domains.todos.schemas import UpdateTODOModel, CreateTodoModel
+from to_do_app.domains.todos.schemas import CreateTodoModel
+from to_do_app.domains.todos.schemas import DeleteTodoModel
+from to_do_app.domains.todos.schemas import TodoList
+from to_do_app.domains.todos.schemas import UpdateTODOModel
+from to_do_app.domains.todos.service import create_user_todo
+from to_do_app.domains.todos.service import delete_user_todo
+from to_do_app.domains.todos.service import get_user_todos
+from to_do_app.domains.todos.service import update_user_todo
 
 
 async def get_todos(context: TodoList):

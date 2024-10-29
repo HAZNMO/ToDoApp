@@ -1,18 +1,19 @@
+from datetime import timedelta
+
 import jwt
-from fastapi import HTTPException, Depends
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from datetime import datetime, timezone, timedelta
+from fastapi import Depends
+from fastapi import HTTPException
+from fastapi.security import HTTPAuthorizationCredentials
+from fastapi.security import HTTPBearer
 from passlib.context import CryptContext
+
 from to_do_app.core.config import settings
-
-
-def utcnow():
-    return datetime.now(tz=timezone.utc)
-
+from to_do_app.core.config import utcnow
 
 TOKEN_EXPIRE_MINUTES = 30
 
 security = HTTPBearer()
+security_dependency = Depends(security)
 
 JWT_SECRET = settings.JWT_SECRET
 JWT_ALGORITHM = settings.JWT_ALGORITHM
@@ -42,13 +43,15 @@ def create_token(user_id: str, email: str) -> str:
 
 
 # Decoding JWT token
-def decode_token(credentials: HTTPAuthorizationCredentials = Depends(security)) -> dict:
+def decode_token(
+    credentials: HTTPAuthorizationCredentials = security_dependency,
+) -> dict:
     token = credentials.credentials
     try:
         decoded = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+    except jwt.ExpiredSignatureError as err:
+        raise HTTPException(status_code=401, detail="Token has expired") from err
+    except jwt.InvalidTokenError as err:
+        raise HTTPException(status_code=401, detail="Invalid token") from err
+    else:
         return decoded
-    except jwt.ExpiredSignatureError:
-        raise HTTPException(status_code=401, detail="Token has expired")
-    except jwt.InvalidTokenError as e:
-        print(e)
-        raise HTTPException(status_code=401, detail="Invalid token")
