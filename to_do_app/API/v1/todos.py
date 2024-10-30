@@ -6,7 +6,6 @@ from fastapi import Depends
 from fastapi import Query
 from fastapi import status
 
-from to_do_app.dependencies.auth.dependencies import decode_token
 from to_do_app.dependencies.auth.dependencies import get_user_id
 from to_do_app.domains.todos.flow import create_todo
 from to_do_app.domains.todos.flow import delete_todo
@@ -22,17 +21,15 @@ from to_do_app.domains.todos.schemas import UpdateTODOModel
 
 todos_router = APIRouter()
 
-
 # TODO  response model should be equal with return type, and use just on of them
 @todos_router.get("/todos", response_model=list[TodoModel])
 async def get_todos_route(
-    user_info: Annotated[dict, Depends(decode_token)],  # TODO use user_id dependency
+    user_id: Annotated[str, Depends(get_user_id)],
     task_status: Annotated[
         TaskStatus | None,
         Query(description="Task status to filter by (To Do, In Progress, Done)"),
     ] = None,
 ) -> TodoList:
-    user_id = user_info.get("user_id")
 
     return await get_todos(context=TodoList(user_id=user_id, task_status=task_status))
 
@@ -45,12 +42,11 @@ async def get_todos_route(
     response_model_by_alias=False,
 )
 async def create_todo_route(
-    user_info: Annotated[dict, Depends(decode_token)],
     todo: Annotated[CreateTodoIn, Body(...)],
+    user_id: Annotated[str, Depends(get_user_id)]
 ) -> CreateTodoModel:
 
     # TODO adjust using partial model with small args, then pass to flow with user id then pass to service with full object to be saved
-    user_id = user_info.get("user_id")
     todo_with_user_id = todo.model_copy(update={"user_id": user_id})
     return await create_todo(context=todo_with_user_id)
 
@@ -63,10 +59,9 @@ async def create_todo_route(
 )
 async def update_todo_route(
     todo_id: str,
-    user_info: Annotated[dict, Depends(decode_token)],
     todo_update: Annotated[UpdateTODOModel, Body(...)],
+    user_id: Annotated[str, Depends(get_user_id)],
 ) -> UpdateTODOModel:
-    user_id = user_info.get("user_id")
     todo_id_and_user_id = todo_update.model_copy(
         update={"todo_id": todo_id, "user_id": user_id}
     )
