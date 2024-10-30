@@ -3,7 +3,7 @@ from fastapi import HTTPException
 from pymongo import ReturnDocument
 
 from to_do_app.API.utils.datetime import utcnow
-from to_do_app.domains.todos.schemas import CreateTodoModel
+from to_do_app.domains.todos.schemas import CreateTodoIn
 from to_do_app.domains.todos.schemas import DeleteTodoModel
 from to_do_app.domains.todos.schemas import TodoList
 from to_do_app.domains.todos.schemas import UpdateTODOModel
@@ -22,7 +22,7 @@ async def get_user_todos(context: TodoList) -> TodoList:
     return todos
 
 
-async def create_user_todo(create_todos: CreateTodoModel) -> CreateTodoModel:
+async def create_user_todo(create_todos: CreateTodoIn) -> CreateTodoIn:
     new_todo_data = create_todos.model_dump(by_alias=True, exclude_unset=True)
     new_todo_data["user_id"] = create_todos.user_id
     new_todo_data["created_at"] = utcnow()

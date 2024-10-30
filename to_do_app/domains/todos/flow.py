@@ -1,4 +1,4 @@
-from to_do_app.domains.todos.schemas import CreateTodoModel
+from to_do_app.domains.todos.schemas import CreateTodoIn
 from to_do_app.domains.todos.schemas import DeleteTodoModel
 from to_do_app.domains.todos.schemas import TodoList
 from to_do_app.domains.todos.schemas import UpdateTODOModel
@@ -12,7 +12,7 @@ async def get_todos(context: TodoList) -> TodoList:
     return await get_user_todos(context)
 
 
-async def create_todo(context: CreateTodoModel) -> CreateTodoModel:
+async def create_todo(context: CreateTodoIn) -> CreateTodoIn:
     return await create_user_todo(context)
 
 

@@ -21,6 +21,7 @@ from to_do_app.domains.todos.schemas import UpdateTODOModel
 
 todos_router = APIRouter()
 
+
 # TODO  response model should be equal with return type, and use just on of them
 @todos_router.get("/todos", response_model=list[TodoModel])
 async def get_todos_route(
@@ -42,9 +43,9 @@ async def get_todos_route(
     response_model_by_alias=False,
 )
 async def create_todo_route(
-    todo: Annotated[CreateTodoIn, Body(...)],
-    user_id: Annotated[str, Depends(get_user_id)]
-) -> CreateTodoModel:
+    todo: Annotated[CreateTodoIn, Body(...)],  # CreateTodoIn
+    user_id: Annotated[str, Depends(get_user_id)],
+) -> CreateTodoIn:
 
     # TODO adjust using partial model with small args, then pass to flow with user id then pass to service with full object to be saved
     todo_with_user_id = todo.model_copy(update={"user_id": user_id})

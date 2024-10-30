@@ -1,4 +1,3 @@
-
 from to_do_app.domains.users.schemas import UserCreate
 from to_do_app.domains.users.schemas import UserLogin
 from to_do_app.domains.users.schemas import UserResponse

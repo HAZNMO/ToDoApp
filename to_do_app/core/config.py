@@ -1,6 +1,7 @@
 import secrets
 
 from pydantic_settings import BaseSettings
+from pydantic_settings import SettingsConfigDict
 
 
 class Settings(BaseSettings):
@@ -8,9 +9,7 @@ class Settings(BaseSettings):
     JWT_SECRET: str = secrets.token_urlsafe(16)
     JWT_ALGORITHM: str = "HS256"
 
-    # TODO use pydantic 2 approach https://docs.pydantic.dev/latest/concepts/pydantic_settings/#usage
-    class Config:
-        env_file = ".env"
+    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
 
 
 settings = Settings()
