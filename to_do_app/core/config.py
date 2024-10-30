@@ -1,6 +1,4 @@
 import secrets
-from datetime import UTC
-from datetime import datetime
 
 from pydantic_settings import BaseSettings
 
@@ -10,12 +8,9 @@ class Settings(BaseSettings):
     JWT_SECRET: str = secrets.token_urlsafe(16)
     JWT_ALGORITHM: str = "HS256"
 
+    # TODO use pydantic 2 approach https://docs.pydantic.dev/latest/concepts/pydantic_settings/#usage
     class Config:
         env_file = ".env"
-
-
-def utcnow() -> datetime:
-    return datetime.now(tz=UTC)
 
 
 settings = Settings()

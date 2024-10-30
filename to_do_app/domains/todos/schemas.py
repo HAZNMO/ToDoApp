@@ -8,7 +8,7 @@ from pydantic import ConfigDict
 from pydantic import Field
 from pydantic.functional_validators import BeforeValidator
 
-from to_do_app.core.config import utcnow
+from to_do_app.API.utils.datetime import utcnow
 
 
 class TaskStatus(StrEnum):
@@ -57,6 +57,12 @@ class TodoModel(BaseModel):
             }
         },
     )
+
+
+class CreateTodoIn(BaseModel):
+    title: str
+    description: str
+    status: TaskStatus = TaskStatus.TO_DO
 
 
 class CreateTodoModel(BaseModel):

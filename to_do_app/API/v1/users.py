@@ -17,5 +17,5 @@ async def register_route(user: UserCreate):
 
 
 @users_router.post("/login", response_model=UserResponse)
-async def login_route(user: UserLogin):
+async def login_route(user: UserLogin) -> UserResponse:
     return await login(user)

@@ -8,17 +8,17 @@ from to_do_app.domains.todos.service import get_user_todos
 from to_do_app.domains.todos.service import update_user_todo
 
 
-async def get_todos(context: TodoList):
+async def get_todos(context: TodoList) -> TodoList:
     return await get_user_todos(context)
 
 
-async def create_todo(context: CreateTodoModel):
+async def create_todo(context: CreateTodoModel) -> CreateTodoModel:
     return await create_user_todo(context)
 
 
-async def update_todo(context: UpdateTODOModel):
+async def update_todo(context: UpdateTODOModel) -> UpdateTODOModel:
     return await update_user_todo(context)
 
 
-async def delete_todo(context: DeleteTodoModel):
+async def delete_todo(context: DeleteTodoModel) -> DeleteTodoModel:
     return await delete_user_todo(context)

@@ -1,6 +1,6 @@
 from fastapi import HTTPException
 
-from to_do_app.core.config import utcnow
+from to_do_app.API.utils.datetime import utcnow
 from to_do_app.dependencies.auth.dependencies import create_token
 from to_do_app.dependencies.auth.dependencies import hash_password
 from to_do_app.dependencies.auth.dependencies import verify_password
@@ -28,7 +28,9 @@ async def register_user(user_create: UserCreate, collection=user_collection):
         raise HTTPException(status_code=500, detail="Failed to register user")
 
     user_id = str(result.inserted_id)
-    return create_token(user_id, user_create.email)
+    token = create_token(user_id, user_create.email)
+
+    return token
 
 
 async def authenticate_user(user_login: UserLogin):
