@@ -23,7 +23,7 @@ todos_router = APIRouter()
 
 
 # TODO  response model should be equal with return type, and use just on of them
-@todos_router.get("/todos", response_model=list[TodoModel])
+@todos_router.get("/todos", tags=["Todos"], response_model=list[TodoModel])
 async def get_todos_route(
     user_id: Annotated[str, Depends(get_user_id)],
     task_status: Annotated[
@@ -37,6 +37,7 @@ async def get_todos_route(
 
 @todos_router.post(
     "/todos",
+    tags=["Todos"],
     response_description="Add new to do",
     response_model=CreateTodoModel,
     status_code=status.HTTP_201_CREATED,
@@ -54,6 +55,7 @@ async def create_todo_route(
 
 @todos_router.put(
     "/todos/{todo_id}",
+    tags=["Todos"],
     response_description="Update a to do",
     response_model=UpdateTODOModel,
     response_model_by_alias=False,
@@ -73,6 +75,7 @@ async def update_todo_route(
 
 @todos_router.delete(
     "/todos/{todo_id}",
+    tags=["Todos"],
     response_model=DeleteTodoModel,
     response_description="Delete a to do",
 )

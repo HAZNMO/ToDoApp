@@ -11,11 +11,11 @@ security = HTTPBearer()
 users_router = APIRouter(prefix="/users")
 
 
-@users_router.post("/register", response_model=UserResponse)
+@users_router.post("/register", tags=["Users"], response_model=UserResponse)
 async def register_route(user: UserCreate):
     return await register(user)
 
 
-@users_router.post("/login", response_model=UserResponse)
+@users_router.post("/login", tags=["Users"], response_model=UserResponse)
 async def login_route(user: UserLogin) -> UserResponse:
     return await login(user)
