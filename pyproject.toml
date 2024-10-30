@@ -101,7 +101,8 @@ ignore = [
           # https://github.com/astral-sh/ruff/issues/7871
     "COM812",
     "ISC001",
-    "RET504"
+    "RET504",
+    "E501"
 ]
 # The fixes in extend-unsafe-fixes will require
 # provide the `--unsafe-fixes` flag when fixing.
