@@ -12,6 +12,7 @@ from to_do_app.API.utils.datetime import utcnow
 from to_do_app.API.utils.token_expire import token_expire
 from to_do_app.core.config import settings
 from to_do_app.dependencies.auth.schemas import TokenModel
+from to_do_app.dependencies.auth.schemas import UserBase
 
 security = HTTPBearer()
 security_dependency = Depends(security)
@@ -30,14 +31,13 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
     return pwd_context.verify(plain_password, hashed_password)
 
 
-# Функция создания JWT токена
-# TODO pass user as argument and make token on user base
-def create_token(user_id: str, email: str) -> str:
+# JWT token creation function
+def create_token(user: UserBase) -> str:
     expiration = token_expire()
 
     token_data = TokenModel(
-        user_id=user_id,
-        email=email,
+        user_id=user.user_id,
+        email=user.email,
         exp=expiration,
         timestamp=utcnow().isoformat(),
     )
@@ -47,7 +47,7 @@ def create_token(user_id: str, email: str) -> str:
     return token
 
 
-# Функция декодирования JWT токена
+# JWT token decoding function
 def decode_token(
     credentials: HTTPAuthorizationCredentials = security_dependency,
 ) -> dict:

@@ -44,7 +44,7 @@ async def get_todos_route(
     response_model_by_alias=False,
 )
 async def create_todo_route(
-    todo: Annotated[CreateTodoIn, Body(...)],  # CreateTodoIn
+    todo: Annotated[CreateTodoIn, Body(...)],
     user_id: Annotated[str, Depends(get_user_id)],
 ) -> CreateTodoIn:
 
