@@ -55,14 +55,10 @@ class TodoModel(BaseModel):
 
 
 
-class CreateTodoModel(BaseModel):
-    id: PyObjectId | None = Field(alias="_id", default=None)
-    created_at: datetime = Field(default_factory=utcnow)
-    user_id: PyObjectId | None = Field(default=None)
-    title: str = Field(...)
-    description: str = Field(...)
+class CreateTodoIn(BaseModel):
+    title: str
+    description: str
     status: TaskStatus = Field(default=TaskStatus.TO_DO)
-
     model_config = ConfigDict(
         populate_by_name=True,
         arbitrary_types_allowed=True,
@@ -76,10 +72,13 @@ class CreateTodoModel(BaseModel):
         },
     )
 
-class CreateTodoIn(CreateTodoModel):
-    title: str
-    description: str
-    status: TaskStatus = TaskStatus.TO_DO
+class CreateTodoInDB(CreateTodoIn):
+    id: PyObjectId | None = Field(alias="_id", default=None)
+    created_at: datetime = Field(default_factory=utcnow)
+    user_id: PyObjectId | None = Field(default=None)
+
+class CreateTodo(CreateTodoInDB):
+    pass
 
 
 class UpdateTODOModel(BaseModel):

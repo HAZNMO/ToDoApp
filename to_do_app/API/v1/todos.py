@@ -11,8 +11,9 @@ from to_do_app.domains.todos.flow import create_todo
 from to_do_app.domains.todos.flow import delete_todo
 from to_do_app.domains.todos.flow import get_todos
 from to_do_app.domains.todos.flow import update_todo
+from to_do_app.domains.todos.schemas import CreateTodo
 from to_do_app.domains.todos.schemas import CreateTodoIn
-from to_do_app.domains.todos.schemas import CreateTodoModel
+from to_do_app.domains.todos.schemas import CreateTodoInDB
 from to_do_app.domains.todos.schemas import DeleteTodoIn
 from to_do_app.domains.todos.schemas import TaskStatus
 from to_do_app.domains.todos.schemas import TodoList
@@ -40,18 +41,16 @@ async def get_todos_route(
     "/todos",
     tags=["Todos"],
     response_description="Add new to do",
-    response_model=CreateTodoModel,
+    response_model=CreateTodoInDB,
     status_code=status.HTTP_201_CREATED,
-    response_model_by_alias=False,
 )
 async def create_todo_route(
     todo: Annotated[CreateTodoIn, Body(...)],
     user_id: Annotated[str, Depends(get_user_id)],
-) -> CreateTodoIn:
-
-    # TODO adjust using partial model with small args, then pass to flow with user id then pass to service with full object to be saved
-    todo_with_user_id = todo.model_copy(update={"user_id": user_id})
+) -> CreateTodoInDB:
+    todo_with_user_id = CreateTodo(**todo.model_dump(), user_id=user_id)
     return await create_todo(context=todo_with_user_id)
+
 
 
 @todos_router.put(
