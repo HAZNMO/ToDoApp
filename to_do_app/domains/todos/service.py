@@ -70,16 +70,26 @@ async def update_user_todo(update_todos: UpdateTodoIn) -> UpdateTodoIn:
 
 
 async def delete_user_todo(delete_todos: DeleteTodoIn) -> DeleteTodoIn:
-    delete_result = await todo_collection.delete_one(
-        {"_id": ObjectId(delete_todos.todo_id), "user_id": delete_todos.user_id}
-    )
+    existing_todo = await todo_collection.find_one({"_id": ObjectId(delete_todos.todo_id)})
 
-    if delete_result.deleted_count == 1:
-        return DeleteTodoIn(
-            todo_id=delete_todos.todo_id,
-            user_id=delete_todos.user_id,
-            message=f"Task of user {delete_todos.user_id} "
-            f"with ID {delete_todos.todo_id} was successfully deleted.",
+    if existing_todo is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Task not found"
         )
 
-    raise HTTPException(status_code=404, detail="Task not found or access denied")
+    if str(existing_todo["user_id"]) != str(delete_todos.user_id):
+        raise HTTPException(
+            status_code=403,
+            detail="You do not have permission to delete this todo"
+        )
+
+    await todo_collection.delete_one({"_id": ObjectId(delete_todos.todo_id)})
+
+    return DeleteTodoIn(
+        todo_id=delete_todos.todo_id,
+        user_id=delete_todos.user_id,
+        message=f"Task of user {delete_todos.user_id} "
+        f"with ID {delete_todos.todo_id} was successfully deleted.",
+    )
+
