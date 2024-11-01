@@ -70,7 +70,6 @@ async def update_todo_route(
         update={"todo_id": todo_id, "user_id": user_id}
     )
 
-    # TODO verify is the same user that was the author of todo is allowed to change
     return await update_todo(context=todo_id_and_user_id)
 
 

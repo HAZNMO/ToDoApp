@@ -34,13 +34,27 @@ async def create_user_todo(create_todos: CreateTodoIn) -> CreateTodoIn:
 
 
 async def update_user_todo(update_todos: UpdateTodoIn) -> UpdateTodoIn:
+    existing_todo = await todo_collection.find_one({"_id": ObjectId(update_todos.todo_id)})
+
+    if existing_todo is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Task not found"
+        )
+
+    if str(existing_todo["user_id"]) != str(update_todos.user_id):
+        raise HTTPException(
+            status_code=403,
+            detail="You do not have permission to update this todo"
+        )
+
     update_data = {
         k: v for k, v in update_todos.model_dump(by_alias=True).items() if v is not None
     }
     update_data["updated_at"] = utcnow()
 
     update_result = await todo_collection.find_one_and_update(
-        {"_id": ObjectId(update_todos.todo_id), "user_id": update_todos.user_id},
+        {"_id": ObjectId(update_todos.todo_id)},
         {"$set": update_data},
         return_document=ReturnDocument.AFTER,
     )
@@ -52,6 +66,7 @@ async def update_user_todo(update_todos: UpdateTodoIn) -> UpdateTodoIn:
         )
 
     return update_result
+
 
 
 async def delete_user_todo(delete_todos: DeleteTodoIn) -> DeleteTodoIn:
