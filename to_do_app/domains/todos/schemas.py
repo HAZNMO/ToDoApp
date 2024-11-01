@@ -25,14 +25,9 @@ class TodoList(BaseModel):
     task_status: TaskStatus | None = None
 
 
-class DeleteTodoModel(BaseModel):
-    todo_id: str
-    user_id: str
-    message: str
-
 
 class TodoModel(BaseModel):
-    id: PyObjectId | None = Field(alias="_id", default=None)
+    id: PyObjectId | None = Field(alias="_id", default=None) #nu poate avea id - asta se ea in din DB
     created_at: datetime = Field(None, alias="created_at")
     updated_at: datetime = Field(None, alias="updated_at")
     user_id: PyObjectId | None = Field(default=None)
@@ -59,11 +54,6 @@ class TodoModel(BaseModel):
     )
 
 
-class CreateTodoIn(BaseModel):
-    title: str
-    description: str
-    status: TaskStatus = TaskStatus.TO_DO
-
 
 class CreateTodoModel(BaseModel):
     id: PyObjectId | None = Field(alias="_id", default=None)
@@ -85,6 +75,11 @@ class CreateTodoModel(BaseModel):
             }
         },
     )
+
+class CreateTodoIn(CreateTodoModel):
+    title: str
+    description: str
+    status: TaskStatus = TaskStatus.TO_DO
 
 
 class UpdateTODOModel(BaseModel):
@@ -108,3 +103,14 @@ class UpdateTODOModel(BaseModel):
             }
         },
     )
+
+class UpdateTodoIn(UpdateTODOModel):
+    title: str
+    description: str
+    status: TaskStatus = TaskStatus.TO_DO
+
+
+class DeleteTodoIn(BaseModel):
+    todo_id: str
+    user_id: str
+    message: str

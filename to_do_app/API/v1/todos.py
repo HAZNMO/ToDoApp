@@ -13,10 +13,11 @@ from to_do_app.domains.todos.flow import get_todos
 from to_do_app.domains.todos.flow import update_todo
 from to_do_app.domains.todos.schemas import CreateTodoIn
 from to_do_app.domains.todos.schemas import CreateTodoModel
-from to_do_app.domains.todos.schemas import DeleteTodoModel
+from to_do_app.domains.todos.schemas import DeleteTodoIn
 from to_do_app.domains.todos.schemas import TaskStatus
 from to_do_app.domains.todos.schemas import TodoList
 from to_do_app.domains.todos.schemas import TodoModel
+from to_do_app.domains.todos.schemas import UpdateTodoIn
 from to_do_app.domains.todos.schemas import UpdateTODOModel
 
 todos_router = APIRouter()
@@ -62,9 +63,9 @@ async def create_todo_route(
 )
 async def update_todo_route(
     todo_id: str,
-    todo_update: Annotated[UpdateTODOModel, Body(...)],
+    todo_update: Annotated[UpdateTodoIn, Body(...)],
     user_id: Annotated[str, Depends(get_user_id)],
-) -> UpdateTODOModel:
+) -> UpdateTodoIn:
     todo_id_and_user_id = todo_update.model_copy(
         update={"todo_id": todo_id, "user_id": user_id}
     )
@@ -76,12 +77,12 @@ async def update_todo_route(
 @todos_router.delete(
     "/todos/{todo_id}",
     tags=["Todos"],
-    response_model=DeleteTodoModel,
+    response_model=DeleteTodoIn,
     response_description="Delete a to do",
 )
 async def delete_todo_route(
     todo_id: str, user_id: Annotated[str, Depends(get_user_id)]
-) -> DeleteTodoModel:
+) -> DeleteTodoIn:
 
-    delete_todo_model = DeleteTodoModel(todo_id=todo_id, user_id=user_id, message="")
+    delete_todo_model = DeleteTodoIn(todo_id=todo_id, user_id=user_id, message="")
     return await delete_todo(context=delete_todo_model)

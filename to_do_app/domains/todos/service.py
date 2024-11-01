@@ -4,9 +4,9 @@ from pymongo import ReturnDocument
 
 from to_do_app.API.utils.datetime import utcnow
 from to_do_app.domains.todos.schemas import CreateTodoIn
-from to_do_app.domains.todos.schemas import DeleteTodoModel
+from to_do_app.domains.todos.schemas import DeleteTodoIn
 from to_do_app.domains.todos.schemas import TodoList
-from to_do_app.domains.todos.schemas import UpdateTODOModel
+from to_do_app.domains.todos.schemas import UpdateTodoIn
 from to_do_app.Infrastructure.DB.mongo_db.mongo_construct import todo_collection
 
 
@@ -33,7 +33,7 @@ async def create_user_todo(create_todos: CreateTodoIn) -> CreateTodoIn:
     return created_todo
 
 
-async def update_user_todo(update_todos: UpdateTODOModel) -> UpdateTODOModel:
+async def update_user_todo(update_todos: UpdateTodoIn) -> UpdateTodoIn:
     update_data = {
         k: v for k, v in update_todos.model_dump(by_alias=True).items() if v is not None
     }
@@ -54,13 +54,13 @@ async def update_user_todo(update_todos: UpdateTODOModel) -> UpdateTODOModel:
     return update_result
 
 
-async def delete_user_todo(delete_todos: DeleteTodoModel) -> DeleteTodoModel:
+async def delete_user_todo(delete_todos: DeleteTodoIn) -> DeleteTodoIn:
     delete_result = await todo_collection.delete_one(
         {"_id": ObjectId(delete_todos.todo_id), "user_id": delete_todos.user_id}
     )
 
     if delete_result.deleted_count == 1:
-        return DeleteTodoModel(
+        return DeleteTodoIn(
             todo_id=delete_todos.todo_id,
             user_id=delete_todos.user_id,
             message=f"Task of user {delete_todos.user_id} "

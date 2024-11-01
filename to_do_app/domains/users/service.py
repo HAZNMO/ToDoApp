@@ -16,14 +16,12 @@ async def register_user(user_create: UserCreate, collection=user_collection):
         raise HTTPException(status_code=400, detail="Email already registered")
 
     hashed_password = hash_password(user_create.password)
-    new_user = {
-        "name": user_create.name,
-        "email": user_create.email,
-        "password": hashed_password,
-        "created_at": utcnow(),
-    }
 
-    result = await collection.insert_one(new_user)
+    new_user_data = user_create.model_copy(
+        update={"password": hashed_password, "created_at": utcnow()}
+    ).model_dump()
+
+    result = await collection.insert_one(new_user_data)
 
     if result.inserted_id is None:
         raise HTTPException(status_code=500, detail="Failed to register user")

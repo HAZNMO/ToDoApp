@@ -1,7 +1,7 @@
 from to_do_app.domains.todos.schemas import CreateTodoIn
-from to_do_app.domains.todos.schemas import DeleteTodoModel
+from to_do_app.domains.todos.schemas import DeleteTodoIn
 from to_do_app.domains.todos.schemas import TodoList
-from to_do_app.domains.todos.schemas import UpdateTODOModel
+from to_do_app.domains.todos.schemas import UpdateTodoIn
 from to_do_app.domains.todos.service import create_user_todo
 from to_do_app.domains.todos.service import delete_user_todo
 from to_do_app.domains.todos.service import get_user_todos
@@ -16,9 +16,9 @@ async def create_todo(context: CreateTodoIn) -> CreateTodoIn:
     return await create_user_todo(context)
 
 
-async def update_todo(context: UpdateTODOModel) -> UpdateTODOModel:
+async def update_todo(context: UpdateTodoIn) -> UpdateTodoIn:
     return await update_user_todo(context)
 
 
-async def delete_todo(context: DeleteTodoModel) -> DeleteTodoModel:
+async def delete_todo(context: DeleteTodoIn) -> DeleteTodoIn:
     return await delete_user_todo(context)
