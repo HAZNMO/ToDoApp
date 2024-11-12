@@ -1,6 +1,7 @@
 from to_do_app.domains.todos.schemas import CreateTodoInDB
 from to_do_app.domains.todos.schemas import DeleteTodoIn
 from to_do_app.domains.todos.schemas import TodoList
+from to_do_app.domains.todos.schemas import TodoModel
 from to_do_app.domains.todos.schemas import UpdateTodoIn
 from to_do_app.domains.todos.service import create_user_todo
 from to_do_app.domains.todos.service import delete_user_todo
@@ -8,7 +9,7 @@ from to_do_app.domains.todos.service import get_user_todos
 from to_do_app.domains.todos.service import update_user_todo
 
 
-async def get_todos(context: TodoList) -> TodoList:
+async def get_todos(context: TodoList) -> list[TodoModel]:
     return await get_user_todos(context)
 
 

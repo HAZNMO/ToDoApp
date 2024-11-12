@@ -27,15 +27,15 @@ todos_router = APIRouter()
 
 # TODO  response model should be equal with return type, and use just on of them
 @todos_router.get("/todos", tags=["Todos"], response_model=list[TodoModel])
+@convert_result
 async def get_todos_route(
     user_id: Annotated[str, Depends(get_user_id)],
     task_status: Annotated[
         TaskStatus | None,
         Query(description="Task status to filter by (To Do, In Progress, Done)"),
     ] = None,
-) -> TodoList:
+) -> list[TodoModel]:
     return await get_todos(context=TodoList(user_id=user_id, task_status=task_status))
-
 
 @todos_router.post(
     "/todos",

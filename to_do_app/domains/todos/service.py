@@ -6,11 +6,12 @@ from to_do_app.API.utils.datetime import utcnow
 from to_do_app.domains.todos.schemas import CreateTodoInDB
 from to_do_app.domains.todos.schemas import DeleteTodoIn
 from to_do_app.domains.todos.schemas import TodoList
+from to_do_app.domains.todos.schemas import TodoModel
 from to_do_app.domains.todos.schemas import UpdateTodoIn
 from to_do_app.Infrastructure.DB.mongo_db.mongo_construct import todo_collection
 
 
-async def get_user_todos(context: TodoList) -> TodoList:
+async def get_user_todos(context: TodoList) -> list[TodoModel]:
     _filter = {}
 
     if context.user_id is not None:

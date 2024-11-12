@@ -24,8 +24,6 @@ class TodoList(BaseModel):
     user_id: str
     task_status: TaskStatus | None = None
 
-
-
 class TodoModel(BaseModel):
     id: PyObjectId | None = Field(alias="_id", default=None) #nu poate avea id - asta se ea in din DB
     created_at: datetime = Field(None, alias="created_at")
