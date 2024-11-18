@@ -6,7 +6,6 @@ from fastapi import Depends
 from fastapi import Query
 from fastapi import status
 
-from to_do_app.API.utils.decorator_convert import convert_result
 from to_do_app.dependencies.auth.dependencies import get_user_id
 from to_do_app.domains.todos.flow import create_todo
 from to_do_app.domains.todos.flow import delete_todo
@@ -25,9 +24,7 @@ from to_do_app.domains.todos.schemas import UpdateTODOModel
 todos_router = APIRouter()
 
 
-# TODO  response model should be equal with return type, and use just on of them
 @todos_router.get("/todos", tags=["Todos"], response_model=list[TodoModel])
-@convert_result
 async def get_todos_route(
     user_id: Annotated[str, Depends(get_user_id)],
     task_status: Annotated[
@@ -44,7 +41,6 @@ async def get_todos_route(
     response_model=CreateTodoInDB,
     status_code=status.HTTP_201_CREATED,
 )
-@convert_result
 async def create_todo_route(
     todo: Annotated[CreateTodoIn, Body(...)],
     user_id: Annotated[str, Depends(get_user_id)],
@@ -61,7 +57,6 @@ async def create_todo_route(
     response_model=UpdateTODOModel,
     response_model_by_alias=False,
 )
-@convert_result
 async def update_todo_route(
     todo_id: str,
     todo_update: Annotated[UpdateTodoIn, Body(...)],
@@ -80,7 +75,6 @@ async def update_todo_route(
     response_model=DeleteTodoIn,
     response_description="Delete a to do",
 )
-@convert_result
 async def delete_todo_route(
     todo_id: str, user_id: Annotated[str, Depends(get_user_id)]
 ) -> DeleteTodoIn:

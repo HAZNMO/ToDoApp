@@ -32,7 +32,6 @@ async def register_user(user_create: UserCreate, collection=user_collection):
 
     return token
 
-
 async def authenticate_user(user_login: UserLogin):
     user = await user_collection.find_one({"email": user_login.email})
     if user and verify_password(user_login.password, user["password"]):

@@ -3,6 +3,7 @@ from fastapi import HTTPException
 from pymongo import ReturnDocument
 
 from to_do_app.API.utils.datetime import utcnow
+from to_do_app.API.utils.decorator_convert import convert_result
 from to_do_app.domains.todos.schemas import CreateTodoInDB
 from to_do_app.domains.todos.schemas import DeleteTodoIn
 from to_do_app.domains.todos.schemas import TodoList
@@ -11,6 +12,7 @@ from to_do_app.domains.todos.schemas import UpdateTodoIn
 from to_do_app.Infrastructure.DB.mongo_db.mongo_construct import todo_collection
 
 
+@convert_result
 async def get_user_todos(context: TodoList) -> list[TodoModel]:
     _filter = {}
 
@@ -22,7 +24,7 @@ async def get_user_todos(context: TodoList) -> list[TodoModel]:
     todos = await todo_collection.find(_filter).to_list(None)
     return todos
 
-
+@convert_result
 async def create_user_todo(create_todos: CreateTodoInDB) -> CreateTodoInDB:
     new_todo_data = create_todos.model_dump(by_alias=True ,exclude_unset=True)
     new_todo_data["user_id"] = create_todos.user_id
@@ -32,7 +34,7 @@ async def create_user_todo(create_todos: CreateTodoInDB) -> CreateTodoInDB:
     return CreateTodoInDB(**created_todo)
 
 
-
+@convert_result
 async def update_user_todo(update_todos: UpdateTodoIn) -> UpdateTodoIn:
     existing_todo = await todo_collection.find_one({"_id": ObjectId(update_todos.todo_id)})
 
@@ -68,7 +70,7 @@ async def update_user_todo(update_todos: UpdateTodoIn) -> UpdateTodoIn:
     return update_result
 
 
-
+@convert_result
 async def delete_user_todo(delete_todos: DeleteTodoIn) -> DeleteTodoIn:
     existing_todo = await todo_collection.find_one({"_id": ObjectId(delete_todos.todo_id)})
 
