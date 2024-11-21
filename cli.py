@@ -3,6 +3,9 @@ import subprocess
 import typer
 import uvicorn
 
+from to_do_app.core.config import run_settings
+
+APP_PATH = "to_do_app.app:app"
 app = typer.Typer()
 
 @app.command()
@@ -13,9 +16,9 @@ def start():
 def start_dev():
     typer.echo("Starting the development server...")
     uvicorn.run(
-        "to_do_app.app:app",
-        host="127.0.0.1",
-        port=8000,
+        app=APP_PATH,
+        host=run_settings.host,
+        port=run_settings.port,
         reload=True,
         log_level="debug"
     )
@@ -24,9 +27,9 @@ def start_dev():
 def start_prod():
     typer.echo("Starting the production server...")
     uvicorn.run(
-        "to_do_app.app:app",
-        host="127.0.0.1",
-        port=8000,
+        app=APP_PATH,
+        host=run_settings.host,
+        port=run_settings.port,
         reload=False,
         log_level="info",
         workers=4
