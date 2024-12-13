@@ -31,9 +31,8 @@ def start_prod():
         host=run_settings.host,
         port=run_settings.port,
         reload=False,
-        log_level="info",
-        workers=4
-        )
+        log_level="info"
+    )
 
 @app.command()
 def code():

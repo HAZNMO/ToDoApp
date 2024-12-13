@@ -13,17 +13,6 @@ ENV PYTHONUNBUFFERED=1
 # Set the working directory
 WORKDIR /app
 
-# Create a non-privileged user for running the application
-ARG UID=10001
-RUN adduser \
-    --disabled-password \
-    --gecos "" \
-    --home "/nonexistent" \
-    --shell "/sbin/nologin" \
-    --no-create-home \
-    --uid "${UID}" \
-    appuser
-
 # Install Poetry
 RUN python -m pip install --upgrade pip && pip install poetry
 
@@ -32,9 +21,6 @@ COPY . .
 
 # Install dependencies using Poetry
 RUN poetry config virtualenvs.create false && poetry install --no-root --only main
-
-# Switch to the non-privileged user
-USER appuser
 
 # Expose the port the application listens on
 EXPOSE 8000

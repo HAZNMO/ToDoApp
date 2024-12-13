@@ -1,7 +1,7 @@
 import secrets
 
-from pydantic import BaseModel
 from pydantic_settings import BaseSettings
+from pydantic_settings import PydanticBaseSettingsSource
 from pydantic_settings import SettingsConfigDict
 
 
@@ -14,8 +14,19 @@ class Settings(BaseSettings):
 
 settings = Settings()
 
-class RunSettings(BaseModel):
-    host: str = "127.0.0.1"
+class RunSettings(BaseSettings):
+    host: str = "0.0.0.0"
     port: int = 8000
+
+    @classmethod
+    def settings_customise_sources(
+            cls,
+            settings_cls: type[BaseSettings],
+            init_settings: PydanticBaseSettingsSource,
+            env_settings: PydanticBaseSettingsSource,
+            dotenv_settings: PydanticBaseSettingsSource,
+            file_secret_settings: PydanticBaseSettingsSource,
+    ) -> tuple[PydanticBaseSettingsSource, ...]:
+        return env_settings, init_settings, file_secret_settings
 
 run_settings = RunSettings()
