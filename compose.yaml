@@ -12,27 +12,49 @@ services:
   server:
     build:
       context: .
+    container_name: fastapi_app
     ports:
-      - "8000:8000"  # Ваше приложение будет доступно по этому порту
+      - "8000:8000"  # Port mapping for local testing
     environment:
       MONGO_URL: mongodb://mongo:27017/todoapp
     depends_on:
-      - mongo  # Гарантирует, что MongoDB запустится перед приложением
+      - mongo
+    networks:
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.redirectscheme.redirectscheme.scheme=https" # Middleware to redirect to HTTPS
+      - "traefik.http.services.todo.loadbalancer.server.port=8000" # Define application port
+      - "traefik.http.routers.todo.rule=Host(`todo.haznmo.me`)" # Specify the host
+      - "traefik.http.routers.todo.service=todo" # Link to the service
+      - "traefik.http.routers.todo.middlewares=redirectscheme" # Enable middleware for redirection
+      - "traefik.http.routers.todo_secure.rule=Host(`todo.haznmo.me`)" # Define the host for HTTPS
+      - "traefik.http.routers.todo_secure.service=todo" # Link to the service for HTTPS
+      - "traefik.http.routers.todo_secure.tls=true" # Enable TLS
+      - "traefik.http.routers.todo_secure.tls.certresolver=cloudflare" # Use Cloudflare certificate resolver
+    restart: unless-stopped
 
   mongo:
     image: mongodb/mongodb-community-server:6.0-ubi8
-    container_name: todo_mongo  # Название контейнера
+    container_name: todo_mongo
     ports:
-      - "27017:27017"  # Экспорт порта MongoDB
+      - "27017:27017" # Expose MongoDB port
     environment:
-      MONGODB_INITDB_ROOT_USERNAME: root  # Настройка пользователя
-      MONGODB_INITDB_ROOT_PASSWORD: example  # Настройка пароля
-#      MONGO_INITDB_DATABASE: todoapp  # База данных по умолчанию
+      MONGODB_INITDB_ROOT_USERNAME: root # MongoDB root username
+      MONGODB_INITDB_ROOT_PASSWORD: example # MongoDB root password
     volumes:
-      - mongo-data:/data/db  # Персистентное хранилище для MongoDB
+      - mongo-data:/data/db # Mount volume for persistent MongoDB data
+    networks:
+      - proxy # Connect MongoDB to the proxy network
+
+networks:
+  proxy:
+    name: proxy
+    external: true # Use an existing external network
 
 volumes:
-  mongo-data: {}  # Создаёт постоянный том для MongoDB
+  mongo-data: {} # Define a named volume for MongoDB data
+
 
 
 # The commented out section below is an example of how to define a PostgreSQL
