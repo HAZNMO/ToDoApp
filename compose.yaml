@@ -16,7 +16,7 @@ services:
     ports:
       - "8000:8000"  # Port mapping for local testing
     environment:
-      MONGO_URL: mongodb://mongo:27017/todoapp
+      MONGO_URL: "mongodb://root:example@mongo:27017/todoapp?authSource=admin"
     depends_on:
       - mongo
     networks:
