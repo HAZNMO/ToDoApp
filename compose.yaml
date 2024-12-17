@@ -15,45 +15,45 @@ services:
     container_name: fastapi_app
     ports:
       - "8000:8000"  # Port mapping for local testing
-    environment:
-      MONGO_URL: "mongodb://root:example@mongo:27017/todoapp?authSource=admin"
+    env_file:
+      - .env  # Load environment variables from the .env file
     depends_on:
       - mongo
     networks:
       - proxy
     labels:
       - "traefik.enable=true"
-      - "traefik.http.middlewares.redirectscheme.redirectscheme.scheme=https" # Middleware to redirect to HTTPS
-      - "traefik.http.services.todo.loadbalancer.server.port=8000" # Define application port
-      - "traefik.http.routers.todo.rule=Host(`todo.haznmo.me`)" # Specify the host
-      - "traefik.http.routers.todo.service=todo" # Link to the service
-      - "traefik.http.routers.todo.middlewares=redirectscheme" # Enable middleware for redirection
-      - "traefik.http.routers.todo_secure.rule=Host(`todo.haznmo.me`)" # Define the host for HTTPS
-      - "traefik.http.routers.todo_secure.service=todo" # Link to the service for HTTPS
-      - "traefik.http.routers.todo_secure.tls=true" # Enable TLS
-      - "traefik.http.routers.todo_secure.tls.certresolver=cloudflare" # Use Cloudflare certificate resolver
+      - "traefik.http.middlewares.redirectscheme.redirectscheme.scheme=https"
+      - "traefik.http.services.todo.loadbalancer.server.port=8000"
+      - "traefik.http.routers.todo.rule=Host(`todo.haznmo.me`)"
+      - "traefik.http.routers.todo.service=todo"
+      - "traefik.http.routers.todo.middlewares=redirectscheme"
+      - "traefik.http.routers.todo_secure.rule=Host(`todo.haznmo.me`)"
+      - "traefik.http.routers.todo_secure.service=todo"
+      - "traefik.http.routers.todo_secure.tls=true"
+      - "traefik.http.routers.todo_secure.tls.certresolver=cloudflare"
     restart: unless-stopped
 
   mongo:
     image: mongodb/mongodb-community-server:6.0-ubi8
     container_name: todo_mongo
     ports:
-      - "27017:27017" # Expose MongoDB port
+      - "27017:27017"
     environment:
-      MONGODB_INITDB_ROOT_USERNAME: root # MongoDB root username
-      MONGODB_INITDB_ROOT_PASSWORD: example # MongoDB root password
+      MONGODB_INITDB_ROOT_USERNAME: root
+      MONGODB_INITDB_ROOT_PASSWORD: example
     volumes:
-      - mongo-data:/data/db # Mount volume for persistent MongoDB data
+      - mongo-data:/data/db
     networks:
-      - proxy # Connect MongoDB to the proxy network
+      - proxy
 
 networks:
   proxy:
     name: proxy
-    external: true # Use an existing external network
+    external: true
 
 volumes:
-  mongo-data: {} # Define a named volume for MongoDB data
+  mongo-data: {}
 
 
 
