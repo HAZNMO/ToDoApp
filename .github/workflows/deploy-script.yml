@@ -42,4 +42,8 @@ jobs:
         username: ${{ secrets.SERVER_USER }}
         key: ${{ secrets.SERVER_SSH_KEY }}
         script: |
-            mkdir test_success
+            export REPO_NAME=$(echo "${{ github.repository }}" | cut -d '/' -f 2)
+            cd $REPO_NAME
+            git fetch --all --tags
+            git checkout {{github.sha}}
+            docker compose -f compose.yaml up -d --build
