@@ -18,16 +18,20 @@ jobs:
     - name: Set up Docker
       uses: docker/setup-buildx-action@v2
 
-    # 3. Собираем Docker-образ
-    - name: Build Docker image
-      uses: docker/build-push-action@v4
+    # 3. Запускаем Traefik
+    - name: Deploy Traefik
+      uses: appleboy/ssh-action@v0.1.6
       with:
-        context: .
-        file: ./Dockerfile
-        tags: todoapp:latest  # Тег для Docker-образа
+        host: ${{ secrets.SERVER_HOST }}
+        username: ${{ secrets.SERVER_USER }}
+        key: ${{ secrets.SERVER_SSH_KEY }}
+        script: |
+          cd ~/traefik
+          docker-compose down
+          docker-compose up -d
 
-    # 4. Деплой через SSH на сервер
-    - name: Deploy to Server
+    # 4. Деплой основного приложения
+    - name: Deploy ToDoApp
       uses: appleboy/ssh-action@v0.1.6
       with:
         host: ${{ secrets.SERVER_HOST }}
@@ -37,4 +41,3 @@ jobs:
           cd ~/ToDoApp
           docker-compose down
           docker-compose up -d --build
-
