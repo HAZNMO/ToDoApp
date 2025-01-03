@@ -27,8 +27,8 @@ jobs:
         key: ${{ secrets.SERVER_SSH_KEY }}
         script: |
           cd ~/traefik
-          docker-compose down
-          docker-compose up -d
+          docker compose down
+          docker compose up -d
         debug: true
 
     # 4. Деплой основного приложения
@@ -40,6 +40,6 @@ jobs:
         key: ${{ secrets.SERVER_SSH_KEY }}
         script: |
           cd ~/ToDoApp
-          docker-compose down
-          docker-compose up -d --build
+          docker compose down
+          docker compose up -d --build
 
