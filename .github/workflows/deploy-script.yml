@@ -17,6 +17,9 @@ jobs:
     # 2. Устанавливаем Docker
     - name: Set up Docker
       uses: docker/setup-buildx-action@v2
+    - name: Debug SSH Key
+      run: |
+        echo "${{ secrets.SERVER_SSH_KEY }}" | base64 --decode
 
     # 3. Запускаем Traefik
     - name: Deploy Traefik
