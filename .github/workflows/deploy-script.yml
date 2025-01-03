@@ -29,6 +29,7 @@ jobs:
           cd ~/traefik
           docker-compose down
           docker-compose up -d
+          debug: true
 
     # 4. Деплой основного приложения
     - name: Deploy ToDoApp
