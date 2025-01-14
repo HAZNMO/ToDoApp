@@ -10,8 +10,7 @@
 
 services:
   server:
-    build:
-      context: .
+    image: "${DOCKER_USERNAME}/todo_app:${VERSION_TAG}" # Dynamically pull from the registry
     container_name: fastapi_app
     ports:
       - "8000:8000"  # Port mapping for local testing
