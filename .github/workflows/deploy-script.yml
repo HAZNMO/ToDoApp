@@ -27,11 +27,12 @@ jobs:
       with:
         context: .
         push: true
-        tags: ${{ secrets.DOCKER_USERNAME }}/todoapp:latest
+        tags: |
+          ${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:${{ github.sha }} # add the commit sha instead of latest to avoid overwriting, also add dynamic repo name
 
   deploy:
     runs-on: ubuntu-latest
-    needs: build_and_push  # This job will only run after 'build_and_push' succeeds
+    needs: build_and_push
 
     steps:
     # Step 1: Checkout the repository
